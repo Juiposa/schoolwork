@@ -1,0 +1,30 @@
+00009500 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.15.02
+Created On: 30/10/2014 9:02:14 AM
+
+00009000                             1          ORG     $9000 
+00009000= 00000000                   2  RESULT  DC.L 0
+00009004                             3   
+00009500                             4          ORG     $9500 
+00009500  027C DFFF                  5  START   ANDI.W  #%1101111111111111,SR 
+00009504  4FF9 00008100              6          LEA     $8100,A7 
+0000950A  4EB9 00009512              7          JSR     GENMUL 
+00009510  4E4E                       8          TRAP    #14 
+00009512  2F00                       9  GENMUL  MOVE.L  D0,-(A7) 
+00009514  2001                      10          MOVE.L  D1,D0 
+00009516  C1C2                      11          MULS    D2,D0 
+00009518  23C0 00009000             12          MOVE.L  D0,RESULT 
+0000951E  201F                      13          MOVE.L  (A7)+,D0 
+00009520  4E75                      14          RTS 
+00009522                            15          END START 
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+GENMUL              9512
+RESULT              9000
+START               9500

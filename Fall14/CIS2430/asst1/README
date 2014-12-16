@@ -1,0 +1,35 @@
+/*****************
+Jeffrey-David Kapp
+CIS2430
+Oct 15 2014
+0832671
+*****************/
+
+Assignment 1 for CIS 2430
+
+Day Planner; Java program
+
+Terminal based day planner
+
+Complilation
+-------------------------
+
+A Makefile has been used.
+To compile both the program and the javadoc, navigate to the directory in terminal and simply type:
+
+"make" 
+
+The javadoc is located inthe folder called "javadoc" and can be opened by opening the file "index.html" with any web browser or using an IDE
+
+To run the program, from the main directory type:
+
+"java asst1.DayPlanner"
+
+Test plan
+------------------------
+
+Parts of the program where user input is taken, giving it gibberish and input deliberately out of range was how it was test and robustness was improved.
+
+------------------------
+
+

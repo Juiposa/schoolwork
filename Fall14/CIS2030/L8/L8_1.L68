@@ -1,0 +1,44 @@
+00008000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.15.02
+Created On: 06/11/2014 8:49:57 AM
+
+00008000                             1          ORG     $8000
+00008000                             2          
+00008000  3039 00009000              3  START:  MOVE.W  X,D0
+00008006  4EB9 0000800E              4          JSR     main
+0000800C  4E4E                       5          TRAP    #14
+0000800E                             6          
+0000800E  3F00                       7  main    MOVE.W  D0,-(SP)
+00008010  3F3C 0000                  8          MOVE.W  #0,-(SP)
+00008014  4EB9 00008022              9          JSR     solveQuad
+0000801A  321F                      10          MOVE.W  (SP)+,D1
+0000801C  4FEF 0002                 11          LEA     2(SP),SP
+00008020  4E75                      12          RTS
+00008022                            13          
+00008022  342F 0006                 14  solveQuad   MOVE.W  6(SP),D2
+00008026  362F 0006                 15              MOVE.W  6(SP),D3
+0000802A  C7C3                      16              MULS    D3,D3
+0000802C  C7FC 0005                 17              MULS    #5,D3
+00008030  C5FC 0002                 18              MULS    #2,D2
+00008034  9642                      19              SUB.W   D2,D3
+00008036  5C43                      20              ADD.W   #6,D3
+00008038  3F43 0004                 21              MOVE.W  D3,4(SP)
+0000803C  4E75                      22              RTS  
+0000803E                            23              
+0000803E                            24   
+00009000                            25          ORG     $9000
+00009000= 0005                      26  X       DC.W    $5        
+00009002                            27  
+00009002                            28          END     START
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+MAIN                800E
+SOLVEQUAD           8022
+START               8000
+X                   9000

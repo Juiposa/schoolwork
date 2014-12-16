@@ -1,0 +1,60 @@
+00008000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.15.02
+Created On: 06/11/2014 9:42:21 AM
+
+00008000                             1          ORG     $8000
+00008000                             2          
+00008000  4879 00009000              3  START:  PEA     W
+00008006  3F39 00009002              4          MOVE.W  X,-(SP)
+0000800C  3F39 00009004              5          MOVE.W  Y,-(SP)
+00008012  3F39 00009006              6          MOVE.W  Z,-(SP)
+00008018  4EB9 00008024              7          JSR     main
+0000801E  4FEF 000A                  8          LEA     10(SP),SP
+00008022  4E4E                       9          TRAP    #14
+00008024                            10          
+00008024                            11  
+00008024  3F2F 0008                 12  main    MOVE.W  8(SP),-(SP)
+00008028  3F2F 0008                 13          MOVE.W  8(SP),-(SP)
+0000802C  3F2F 0008                 14          MOVE.W  8(SP),-(SP)
+00008030  4EB9 00008042             15          JSR     solveQuad
+00008036  4FEF 0006                 16          LEA     6(SP),SP
+0000803A  33C0 00009000             17          MOVE.W  D0,W    
+00008040  4E75                      18          RTS
+00008042                            19          
+00008042  322F 0004                 20  solveQuad   MOVE.W  4(SP),D1 ;Z
+00008046  342F 0006                 21              MOVE.W  6(SP),D2 ;Y
+0000804A  362F 0008                 22              MOVE.W  8(SP),D3 ;X
+0000804E  3803                      23              MOVE.W  D3,D4
+00008050  C9C4                      24              MULS    D4,D4
+00008052  C9FC 0005                 25              MULS    #5,D4
+00008056  C7FC 0002                 26              MULS    #2,D3
+0000805A  C7C2                      27              MULS    D2,D3
+0000805C  C3C1                      28              MULS    D1,D1
+0000805E  9843                      29              SUB.W   D3,D4
+00008060  D841                      30              ADD.W   D1,D4
+00008062  3004                      31              MOVE.W  D4,D0
+00008064  4E75                      32              RTS  
+00008066                            33              
+00008066                            34   
+00009000                            35          ORG     $9000
+00009000                            36  W       DS.W    1
+00009002= 0005                      37  X       DC.W    $5
+00009004= 0006                      38  Y       DC.W    $6
+00009006= 0007                      39  Z       DC.W    $7        
+00009008                            40  
+00009008                            41          END     START
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+MAIN                8024
+SOLVEQUAD           8042
+START               8000
+W                   9000
+X                   9002
+Y                   9004
+Z                   9006

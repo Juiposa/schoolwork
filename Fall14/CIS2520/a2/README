@@ -1,0 +1,141 @@
+/********************
+Assignment 2
+Jeffrey-David Kapp
+0832671
+CIS2520 Assignment 2
+14 Oct 2014
+********************/
+
+How to Run
+---------------------
+
+To compile, navigate to source directory and type:
+
+'make'
+
+This will compile each program
+
+Then to run either type
+'./bin/q1'
+'./bin/q2'
+
+Running q2 will be described further later
+
+
+Sample Output and Program Function
+------------------------------------------
+
+Question 1)
+
+When you start the program you are presented with a list of choices:
+
+Choose an option:
+1) add a new car to the available to rent list
+2) add a returned car to the avialable to rent list
+3) add a returned car to the repair list
+4) transfer a car from the repair list to the available to rent list
+5) rent the first avialable car
+6) print all the lists
+7) quit
+
+Selecting any one of these options will executed the command and may or may not ask for addition input.
+
+---
+1) add a new car to the available to rent list
+
+You will be presented with this.
+
+'Enter a plate number followed by the car's odometer.'
+
+After which you would enter data, looking like this
+
+'Enter a plate number followed by the car's odometer.'
+'BVKJ764'
+'16004'
+
+After which the car with platenumber BVKJ764 with an odometer at 16004km will be added to the available to rent list
+
+---
+2) add a returned car to the available to rent list
+
+You would be presented with a message asking for the car's platenumber, then the return mileage, and a total for the trip would be calculated
+looking like this:
+
+'What is the plate number of the car?
+AB39807
+What is the mileage after return?
+46031
+Total charge for trip: $40.00'
+
+---
+3) add a returned car to the repair list
+Will look identical to the above. An extra operation the user does not see will be executed to move the car to the repair list instead of the 
+available list.
+
+---
+4) transfer a car from the repair list to the available to rent list
+Will simply ask for a plate number and complete the operation of moving that car to the available list
+
+---
+5) rent the first avialable car
+
+User will be asked for the car's expected return date:
+
+'When is the car expected back? (ddmmyyyy)'
+'22112014'
+
+The first car on the available to rent list will then be dispatched.
+
+---
+6) print all the lists
+
+To see the lists, select 6, wherein all lists will be printed
+For example:
+
+Available to rent list.
+Car; Platenumber: BVKJ764; Odometer: 16004
+Car; Platenumber: BAWM390; Odometer: 154698
+Car; PlateNumber: AKHJ871; Odometer: 301254
+
+Rented list.
+Car; Platenumber: AB39807; Odometer: 45980; Expected return date: 22102014
+
+Cars being repaired.
+Car; Platenumber: BHJV341; Odometer: 18754
+
+Not much more to that.
+
+---
+7) quit
+
+Well... quit.
+
+---------------------------------
+Question 2
+
+User will input at the command line
+
+Entering the equation you wish to evaluate as the first and only command line argument
+
+'./bin/q2 23+34++'
+
+I've not even started this.
+
+The string is parsed at each level of the binary tree this will be broken up into. 
+At the first level, the operation being done is determined and the two operands parsed. 
+In this case the operation is "+" and the two operands "23+" and "34+"
+As both operands are not the single digit numbers we can work with, we branch the tree further downward.
+The repective operations are determined along with their operands. In this case
+"+", "2", and "3"; and "+", "3", and "4."
+
+Since we now have single digit operands, we evaluate the equations. Getting "5" and "7" respectively.
+
+With these operands determined, we go up a level in the tree and complete the operation there. Resulting in "12"
+
+We branch the tree as much as we need to to get basic single digit operands.
+
+
+
+
+
+

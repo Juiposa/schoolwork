@@ -1,0 +1,49 @@
+00008000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.15.02
+Created On: 23/10/2014 9:27:14 AM
+
+00000000                             1  
+00008000                             2          ORG     $8000
+00008000                             3          
+00008000  41F9 00009000              4  START   LEA     ptr1,A0
+00008006  43F9 00009020              5          LEA     ptr2,A1
+0000800C  45F9 00009024              6          LEA     match,A2
+00008012  1612                       7          MOVE.B  (A2),D3
+00008014  1018                       8  DO      MOVE.B  (A0)+,D0
+00008016                             9  
+00008016  1219                      10          MOVE.B  (A1)+,D1
+00008018  B240                      11          CMP     D0,D1
+0000801A  6700 000A                 12          BEQ     WHILE
+0000801E  163C 0000                 13          MOVE.B  #$00,D3
+00008022  6000 0014                 14          BRA     DONE
+00008026  0C40 000D                 15  WHILE   CMPI    #$0D,D0
+0000802A  6700 000C                 16          BEQ     DONE
+0000802E  0C43 00FF                 17          CMPI    #$FF,D3
+00008032  6600 0004                 18          BNE     DONE
+00008036  60DC                      19          BRA     DO
+00008038                            20  
+00008038  1483                      21  DONE    MOVE.B  D3,(A2)       
+0000803A  4E4E                      22          TRAP    #14
+0000803C                            23                  
+00009000                            24          ORG     $9000
+00009000= 68 65 6C 6C 6F 0D         25  ptr1    DC.B    'h','e','l','l','o',$0D       
+00009020                            26          ORG     $9020    
+00009020= 68 65 6C 0D               27  ptr2    DC.B    'h','e','l',$0D
+00009024= FF                        28  match   DC.B    $FF
+00009025                            29                    
+00009025                            30          END     START
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+DO                  8014
+DONE                8038
+MATCH               9024
+PTR1                9000
+PTR2                9020
+START               8000
+WHILE               8026

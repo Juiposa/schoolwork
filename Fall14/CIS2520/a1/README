@@ -1,0 +1,106 @@
+README
+=========================================
+Assignment 1
+Jeffrey-David Kapp
+0832671
+29 Sep 2014
+CIS2520
+=========================================
+
+===How to run===
+
+Compilation is completed by simply typing 'make'
+
+To run type './bin/A1'
+
+You will be presented with a short three option menu, one for each of the assignment parts
+It looks like this:
+
+Enter an option.
+(a) Carbon function
+(b) Ackermann's function
+(c) Newton's root approximation
+(q) Quit/Exit
+
+===Sample Output===
+
+1. Carbon
+
+I have been unable to firgure out how to implement this is C; but the general idea is as follows ( hopefully I can get part marks for explaining this :P );
+
+The function would have started at the top of a tree from a control function. From there the function would act recursively. It would have a for loop that
+would check each letter, 'c', 'a', 'r', 'b', 'o', and 'n', to see if there are already part of the contructed string or not. In the case that checked
+character ( could be any of the six ) is not already part of the string, the current space in the constructed string coressponding to the level of the
+recursion tree we are one would become that letter. For example:
+
+we are on the top of the tree, so recursion level is 0. Letter 'c' is not already part of the string, so the spot 0 in the constructed string would become 
+'c', giving us the string "c_____". 
+
+Immediately after this, the fucntion would call itself, passing along "carbon", an iterative variable counting the recursion levels, and the constructed 
+string as it stands. The same function as above would be executed, but 'c' would be seen as already part of the string, so we check 'a', the next letter. 
+We see that 'a' is not part of the constructed string, so the spot coresponding to that level of recursion, now spot 1, would become 'a'. We would end up with the string "ca____".
+
+This repeats until we get to the bottom, wherein we no longer have an characters that are not in the string. The first completed string we get is naturally
+"carbon". Since we have a completed string an nowhere else to go, we print the completed string an return up one level of the recursion tree; where the 
+next letter queued to be checked will be checked, and if not part of the string already, will be put in that spot, and a recursive call will be made again 
+to construct the rest of the string. After climbing up one level and constructing the next possible string, we should end up with "carbno".
+
+This continues climbing up as many levels as needed, and back to the bottom to construct full strings for as many times as needed to created eveery 
+possible string using each letter exactly once. Once all levels 0-5 have checked every letter, execution should terminate.
+
+C, 'tis a silly language to be doing things like this in. 
+
+
+
+2. Ackermann
+
+The program will ask for two values, m and n, to be entered respectively. Once this is done, program will print out every iteration of Ackermann's function 
+until a solutiion is reached. For example if the user enter m and n of 2 and 3, this will be printed:
+
+Enter two intial values. 
+ m and then n 
+2 <--user entered values
+3 <--on seperate lines
+2 <--begining of ackermann's function
+3
+3
+2
+3
+4
+5
+5
+2
+3
+4
+5
+6
+7
+7
+2
+3
+4
+5
+6
+7
+8
+9
+9 <--solution for A(2,3)
+
+Typically with an m of 4 or higher, numbers start to get very large, and many iterations are needed. Looking it up A(4,2) is apparently a 19,000 digit number. 
+
+3. Newton's approximation of roots
+
+User will be prompted for a number to be squared rooted and an epsilon with which to bound the approximation. Once entered, both the recursive and
+interative implementations will execute one after another, with no other iteraction needed. Output for a number like 1900 and an epsilon of 0.5 would
+look like this:
+
+Enter a number to be rooted then an epsilon value.
+1900
+0.5
+Recursion.
+The approximate root for 1900.00 for epsilon 0.50 is 43.59.
+Execution time: 0 seconds
+Iterative.
+The approximate root for 1900.00 for epsilon 0.50 is 43.59.
+Execution time: 0 seconds
+

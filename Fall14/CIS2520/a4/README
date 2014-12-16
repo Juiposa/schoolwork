@@ -1,0 +1,28 @@
+README
+
+/*****************
+Jeffrey-David Kapp
+23 November 2014
+0832671
+Assignment 4
+CIS 2520
+*****************/
+
+How to run
+-------------------
+
+To compile, navigate to the main directory of the program, that is where 'Makefile' is stored, and type:
+'make'
+
+To run, again from the main directory, type:
+'./bin/avltree'
+
+
+notes
+-------------------
+Nothing really to tell
+
+Except that my balancing algo is a bit weird. It implements cut/link, but to get a properly balanced tree, I have to loop through six times. Weird. 
+It does balanced the tree properly though, so that's good. :D
+
+The example data file is included as well. 

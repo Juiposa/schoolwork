@@ -1,0 +1,57 @@
+00008000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.15.02
+Created On: 16/10/2014 10:13:01 AM
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      :
+00000000                             3  * Written by :
+00000000                             4  * Date       :
+00000000                             5  * Description:
+00000000                             6  *-----------------------------------------------------------
+00008000                             7              ORG     $8000
+00008000  3039 00009000              8  START:      MOVE.W  num1,D0
+00008006  3239 00009002              9              MOVE.W  num2,D1
+0000800C  3439 00009004             10              MOVE.W  num3,D2
+00008012                            11  
+00008012  B041                      12              CMP     D1,D0
+00008014  6500 000C                 13              BLO     ELSE
+00008018  B042                      14              CMP     D2,D0
+0000801A  6500 0006                 15              BLO     ELSE
+0000801E  6000 0012                 16              BRA     NUM1BIG
+00008022  B240                      17  ELSE        CMP     D0,D1
+00008024  6500 001C                 18              BLO     NUM3BIG
+00008028  B242                      19              CMP     D2,D1
+0000802A  6500 0016                 20              BLO     NUM3BIG
+0000802E  6000 000A                 21              BRA     NUM2BIG              
+00008032  33C0 00009006             22  NUM1BIG     MOVE.W  D0,biggest
+00008038  4E4E                      23              TRAP    #14
+0000803A  33C1 00009006             24  NUM2BIG     MOVE.W  D1,biggest
+00008040  4E4E                      25              TRAP    #14
+00008042  33C2 00009006             26  NUM3BIG     MOVE.W  D2,biggest
+00008048  4E4E                      27              TRAP    #14
+0000804A                            28  
+0000804A                            29  
+00009000                            30              ORG     $9000
+00009000= 0012                      31  num1        DC.W    $12
+00009002= 0018                      32  num2        DC.W    $18
+00009004= 0054                      33  num3        DC.W    $54
+00009006                            34  biggest     DS.W    1
+00009008                            35     
+00009008                            36              END     START        
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+BIGGEST             9006
+ELSE                8022
+NUM1                9000
+NUM1BIG             8032
+NUM2                9002
+NUM2BIG             803A
+NUM3                9004
+NUM3BIG             8042
+START               8000

@@ -1,0 +1,45 @@
+00008000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.15.02
+Created On: 23/10/2014 9:33:44 AM
+
+00000000                             1      
+00008000                             2          ORG $8000
+00008000                             3          
+00008000  41F9 00009000              4  START   LEA     MATRIX,A0
+00008006  343C 0004                  5  DO      MOVE.W  #4,D2         
+0000800A  C4C0                       6          MULU    D0,D2
+0000800C  D401                       7          ADD.B   D1,D2
+0000800E  363C 0004                  8          MOVE.W  #4,D3
+00008012  C6C1                       9          MULU    D1,D3
+00008014  D600                      10          ADD.B   D0,D3         
+00008016  1830 2800                 11          MOVE.B  0(A0,D2.L),D4
+0000801A  11B0 3800 2800            12          MOVE.B  0(A0,D3.L),0(A0,D2.L)
+00008020  1184 3800                 13          MOVE.B  D4,(A0,D3.L)
+00008024                            14          
+00008024  5201                      15          ADD.B   #1,D1
+00008026  B27C 0003                 16          CMP     #3,D1
+0000802A  6FDA                      17         BLE     DO
+0000802C  5200                      18          ADD.B   #1,D0
+0000802E  1200                      19          MOVE.B  D0,D1
+00008030  B07C 0002                 20          CMP     #2,D0
+00008034  6FD0                      21         BLE     DO
+00008036  4E4E                      22  DONE    TRAP    #14
+00008038                            23  
+00009000                            24          ORG $9000       
+00009000= 01 02 03 04               25  MATRIX  DC.B    1,2,3,4
+00009004= 05 06 07 08               26          DC.B    5,6,7,8
+00009008= 09 0A 0B 0C               27          DC.B    9,10,11,12
+0000900C= 0D 0E 0F 10               28          DC.B    13,14,15,16
+00009010                            29          END START
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+DO                  8006
+DONE                8036
+MATRIX              9000
+START               8000

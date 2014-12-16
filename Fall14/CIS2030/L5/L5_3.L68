@@ -1,0 +1,43 @@
+00008000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.15.02
+Created On: 16/10/2014 9:40:05 AM
+
+00000000                             1  *-----------------------------------------------------------
+00000000                             2  * Title      :
+00000000                             3  * Written by :
+00000000                             4  * Date       :
+00000000                             5  * Description:
+00000000                             6  *-----------------------------------------------------------
+00008000                             7              ORG     $8000
+00008000                             8     
+00008000  1039 00009001              9  START       MOVE.B  hexVal,D0
+00008006  1239 00009001             10              MOVE.B  hexVal,D1
+0000800C  D038 0030                 11              ADD.B   $30,D0
+00008010  0C41 0039                 12              CMPI    #$39,D1
+00008014  6200 0004                 13              BHI     IF
+00008018  4E4E                      14              TRAP    #14
+0000801A  5E00                      15  IF          ADD.B   #$7,D0
+0000801C  13C0 00009000             16              MOVE.B  D0,charCode
+00008022  4E4E                      17              TRAP #14
+00008024                            18  
+00008024                            19  
+00009000                            20              ORG     $9000
+00009000                            21  charCode    DS.B    1
+00009001= 42                        22  hexVal      DC.B    $42
+00009002                            23             
+00009002                            24  
+00009002                            25  
+00009002                            26  
+00009002                            27              END     START 
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+CHARCODE            9000
+HEXVAL              9001
+IF                  801A
+START               8000

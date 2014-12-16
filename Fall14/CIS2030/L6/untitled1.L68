@@ -1,0 +1,46 @@
+00008000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.15.02
+Created On: 23/10/2014 8:22:06 AM
+
+00000000                             1  
+00008000                             2          ORG     $8000
+00008000                             3          
+00008000  41F9 00009000              4  START   LEA     ptr1,A0
+00008006  43F9 00009020              5          LEA     ptr2,A1
+0000800C  45F9 00009038              6          LEA     match,A2
+00008012  1018                       7  DO      MOVE.B  (A0)+,D0
+00008014  1219                       8          MOVE.B  (A1)+,D1
+00008016  B240                       9          CMP     D0,D1
+00008018  6700 000A                 10          BEQ     WHILE
+0000801C  14BC 0000                 11          MOVE.B  #$00,(A2)
+00008020  6000 0014                 12          BRA     DONE
+00008024  0C40 000D                 13  WHILE   CMPI    #$0D,D0
+00008028  6700 000C                 14          BEQ     DONE
+0000802C  0C52 00FF                 15          CMPI    #$FF,(A2)
+00008030  6600 0004                 16          BNE     DONE
+00008034  60DC                      17          BRA     DO
+00008036  13D2 00009038             18  DONE    MOVE.B  (A2),match
+0000803C  4E4E                      19          TRAP    #14
+0000803E                            20  
+00009000                            21          ORG     $9000
+00009000= 68 65 6C 6C 6F 0D         22  ptr1    DC.B    'h','e','l','l','o',$0D
+00009020                            23          ORG     $9020    
+00009020= 68000000 65000000 ...     24  ptr2    DC.L    'h','e','l','l','o',$0D
+00009038= FF                        25  match   DC.B    $FF
+00009039                            26                    
+00009039                            27          END     START
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+DO                  8012
+DONE                8036
+MATCH               9038
+PTR1                9000
+PTR2                9020
+START               8000
+WHILE               8024

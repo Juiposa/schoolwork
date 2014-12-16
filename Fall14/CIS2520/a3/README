@@ -1,0 +1,167 @@
+README
+
+/*****************
+Jeffrey-David Kapp
+25 October 2014
+0832671
+Assignment 3
+CIS 2520
+*****************/
+
+How to run
+-------------------
+
+To compile, navigate to the main directory of the program, that is where 'Makefile' is stored, and type:
+'make'
+
+This will compile both questions of the assignment.
+
+To run question 1, type:
+
+'./bin/q1 "equation"'
+
+Such that 'equation' is a fully parenthesised equation. Note that equation must be in quotation marks or bash
+will report an error. 
+
+To run question 2, type:
+
+'./bin/q2'
+
+Nothing else is needed, but do make sure the file containing the numbers is named 'f.dat' and in the main directory.
+
+Sample Output
+-------------------
+
+Question 1)
+
+You will be presented with a menu:
+
+Select an option
+1. Display
+2. Preorder
+3. Inorder
+4. Postorder
+5. Update
+6. Calculate
+7. Exit
+
+Select and option and the program will prompt you appropriately.
+For all examples, the equation (((x1+5.12)*(x2-7.68))/x3) will be used
+
+1. Display
+
+This section of the assignment was not completed
+
+2. Preorder
+
+Will list the equation in preorder notation.
+This will look like:
+
+/ * + x1 5.12 - x2 7.68 x3
+
+3. Inorder
+
+Will list the equation inorder.
+Will look like:
+(((x1+5.12)*(x2-7.68))/x3)
+Pretty much just as entered.
+
+4. Postorder
+
+Will list the equation in postorder notation
+Will look like
+ x1 5.12 + x2 7.68 - * x3 /
+
+5. Update
+
+Used for updating the values of your variables.
+All variables are in the form xX. Where X is any natural number. 
+
+You would be prompted as such:
+
+Input a variable and its new value.
+variable_name, new_value
+
+Where you'd then enter a variable name and value explicitly as shown, ie;
+
+x1, 4.00 or x2, 3
+   ^           ^
+Please make sure the space is there. I'm using strtok, so it'll segfault if that space is not there. 
+
+6. Calculate
+
+Will determine the value of the equation.
+If in the above equation, x1 = 3, x2 = 4.5, and x3 = 9 it would output:
+
+Result: -2.87
+
+7. Exit
+
+Simply exits. 
+
+------------------
+Question 2)
+
+I was unable to find a way in which to navigate the tree where I could out the heap in proper array notation. So the array outputed will
+be incorrect. It is crawling the tree top to bottom, left to right; so the right child of a node  and the right childs descentdent's
+will be listed after the left child and all of the left child's descendents. 
+
+To compentsate, the down heap algorithm will give you detailed output as to whats it's doing, so you can verifiy the tree is being constructed properly. 
+
+To start, when the fileIO function reads in from the file, it will outout the parsed arrays along with their keys.
+
+After wards, the downheap algorithm will do its thing:
+
+What it will tell you.
+
+---------
+"====INVALUES: Heap Root Key %d; Working Node Key %d\n"
+
+This will tell you the values going into the function before anything happens. 
+The Heap Key is the key of the root of the tree.
+Working node is the node we are trying to find a spot for in the heap.
+
+---------
+"Loop keys:::::: Active Node %d Working Node %d\n"
+
+For each iteration, the current active node and the working ndeo will be listed.
+The Active node is a node already in the tree, which we compare to the Working node. 
+
+---------
+"Root is null\n"
+
+Root is null, and as such, the working node becomes the root.
+
+---------
+"Root is larger than working node.\n"
+
+Root is larger, therefore the working node will take that spot and the fucntion will be recursively called to find the old root a new home.
+
+---------
+"Root is smaller that working node.\n
+
+We are clear to begin climbing down the tree. 
+
+---------
+"++++++RECURSIVE CALL++++++\n"
+
+Will tell you whenever the function calls itself.
+
+---------
+"Left child is null\n"
+"Right child is null\n"
+
+Tells you if a child is null. In that case, with priority given to the left, the working node is placed in that leaf. 
+
+---------
+"Switch active node to = %d\n"
+
+Generic message you will get a lot. Shown everytime the active node is updated as we climb down the tree looking for a spot for the working node.
+We do this until we find a node appropriate to swap out, or we get to a leaf. 
+
+---------
+"Swap out nodes %d and %d\n"
+
+Shown after a node that the working node is smaller than is found, necessitating we swap them out. The function will be recursively called here, to
+find the swapped out node a new home. 
+

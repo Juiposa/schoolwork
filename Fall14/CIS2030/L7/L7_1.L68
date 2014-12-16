@@ -1,0 +1,42 @@
+00008000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.15.02
+Created On: 30/10/2014 9:00:32 AM
+
+00000000                             1  
+00008000                             2          ORG     $8000
+00008000  2039 00009000              3  START   MOVE.L  VAR1,D0
+00008006  2239 00009004              4          MOVE.L  VAR2,D1
+0000800C  4242                       5          CLR     D2
+0000800E                             6  
+0000800E  0801 0000                  7  LOOP    BTST.L  #0,D1 ;TEST THE LAST BIT
+00008012  6700 000E                  8          BEQ     MULT  ;IF ITS EVEN, SKIP ADDING 
+00008016  D480                       9          ADD.L   D0,D2 ;ADD IF ITS ODD
+00008018  B2BC 00000001             10          CMP.L   #1,D1 ;MAKE SURE D1 DOESN'T CONTAIN 1
+0000801E  6700 0008                 11          BEQ     EXIT  ;IF IT DOES, EXIT
+00008022  E348                      12  MULT    LSL     #1,D0 ;SHIFT OPERANDS
+00008024  E249                      13          LSR     #1,D1
+00008026  60E6                      14          BRA     LOOP
+00008028  23C2 00009008             15  EXIT    MOVE.L  D2,RESULT ;MOVE RESULT TO MEMORY
+0000802E  4E4E                      16          TRAP    #14
+00008030                            17  
+00009000                            18         ORG     $9000
+00009000= 0000001E                  19  VAR1    DC.L    30
+00009004= 00000019                  20  VAR2    DC.L    25
+00009008                            21  RESULT  DS.L    1
+0000900C                            22                
+0000900C                            23          END     START        
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+EXIT                8028
+LOOP                800E
+MULT                8022
+RESULT              9008
+START               8000
+VAR1                9000
+VAR2                9004
