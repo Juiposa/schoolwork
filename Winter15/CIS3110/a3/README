@@ -1,0 +1,30 @@
+/*******************
+Jeffrey-David Kapp
+0832671
+27 March 2015
+CIS3110 Assignment 3
+********************/
+
+to compile simply type 'make'
+
+executables are found in bin/ under the required names
+
+
+I did very little for part 1. It links and compiles and I did a bit of messing around learning pthreads.
+What I have is there.
+
+For Part 2 -
+
+I used two data structures to handle memory.
+
+A static array to keep track of inidividual megabytes and if they were occupied or not, and a series of queues for processes
+waiting to be loaded, processes in memory, and processes that had finished completing ( swapped out for a third time )
+
+The processes would be swapped between these queues as needed, at the same time updating thier range in memory accordingly.
+
+There is not much else I subjectively did. Everything with regard to picking holes I did to the definition of the strategies
+and assignment. 
+
+I did not implement next fit, 'cause I'm a lazy bum. 
+
+Have a good day. 

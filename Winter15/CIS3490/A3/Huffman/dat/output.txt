@@ -1,0 +1,203 @@
+Compression Ratio 0.53
+
+Char: g Freq: 68
+Code: 00000 Code Length: 5
+
+Char: q Freq: 68
+Code: 00001 Code Length: 5
+
+Char: r Freq: 136
+Code: 0001 Code Length: 4
+
+Char: a Freq: 69
+Code: 00100 Code Length: 5
+
+Char: n Freq: 69
+Code: 00101 Code Length: 5
+
+Char: o Freq: 138
+Code: 0011 Code Length: 4
+
+Char: t Freq: 69
+Code: 01000 Code Length: 5
+
+Char: 4 Freq: 16
+Code: 0100100 Code Length: 7
+
+Char: 3 Freq: 17
+Code: 0100101 Code Length: 7
+
+Char: 7 Freq: 18
+Code: 0100110 Code Length: 7
+
+Char: ! Freq: 1
+Code: 0100111000 Code Length: 10
+
+Char: " Freq: 1
+Code: 0100111001 Code Length: 10
+
+Char: W Freq: 1
+Code: 01001110100 Code Length: 11
+
+Char: Y Freq: 1
+Code: 01001110101 Code Length: 11
+
+Char: J Freq: 1
+Code: 010011101100 Code Length: 12
+
+Char: K Freq: 1
+Code: 010011101101 Code Length: 12
+
+Char: p Freq: 2
+Code: 01001110111 Code Length: 11
+
+Char: / Freq: 1
+Code: 01001111000 Code Length: 11
+
+Char: ? Freq: 1
+Code: 01001111001 Code Length: 11
+
+Char: H Freq: 1
+Code: 010011110100 Code Length: 12
+
+Char: I Freq: 1
+Code: 010011110101 Code Length: 12
+
+Char: R Freq: 2
+Code: 01001111011 Code Length: 11
+
+Char: , Freq: 1
+Code: 01001111100 Code Length: 11
+
+Char: - Freq: 1
+Code: 01001111101 Code Length: 11
+
+Char: w Freq: 1
+Code: 010011111100 Code Length: 12
+
+Char: x Freq: 1
+Code: 010011111101 Code Length: 12
+
+Char: s Freq: 3
+Code: 01001111111 Code Length: 11
+
+Char: 
+ Freq: 203
+Code: 0101 Code Length: 4
+
+Char: 1 Freq: 419
+Code: 011 Code Length: 3
+
+Char: C Freq: 203
+Code: 1000 Code Length: 4
+
+Char: 0 Freq: 242
+Code: 1001 Code Length: 4
+
+Char:   Freq: 472
+Code: 101 Code Length: 3
+
+Char: 8 Freq: 8
+Code: 11000000 Code Length: 8
+
+Char: $ Freq: 1
+Code: 11000001000 Code Length: 11
+
+Char: ' Freq: 1
+Code: 11000001001 Code Length: 11
+
+Char: b Freq: 1
+Code: 110000010100 Code Length: 12
+
+Char: c Freq: 1
+Code: 110000010101 Code Length: 12
+
+Char: . Freq: 2
+Code: 11000001011 Code Length: 11
+
+Char: f Freq: 1
+Code: 11000001100 Code Length: 11
+
+Char: j Freq: 1
+Code: 11000001101 Code Length: 11
+
+Char: A Freq: 1
+Code: 110000011100 Code Length: 12
+
+Char: B Freq: 1
+Code: 110000011101 Code Length: 12
+
+Char: i Freq: 3
+Code: 11000001111 Code Length: 11
+
+Char: 6 Freq: 13
+Code: 11000010 Code Length: 8
+
+Char: 5 Freq: 14
+Code: 11000011 Code Length: 8
+
+Char: 9 Freq: 14
+Code: 11000100 Code Length: 8
+
+Char: D Freq: 1
+Code: 11000101000 Code Length: 11
+
+Char: G Freq: 1
+Code: 11000101001 Code Length: 11
+
+Char: M Freq: 1
+Code: 110001010100 Code Length: 12
+
+Char: N Freq: 1
+Code: 110001010101 Code Length: 12
+
+Char: y Freq: 1
+Code: 110001010110 Code Length: 12
+
+Char: k Freq: 1
+Code: 1100010101110 Code Length: 13
+
+Char: l Freq: 1
+Code: 1100010101111 Code Length: 13
+
+Char: S Freq: 1
+Code: 11000101100 Code Length: 11
+
+Char: T Freq: 1
+Code: 11000101101 Code Length: 11
+
+Char: O Freq: 1
+Code: 110001011100 Code Length: 12
+
+Char: P Freq: 1
+Code: 110001011101 Code Length: 12
+
+Char: u Freq: 1
+Code: 1100010111100 Code Length: 13
+
+Char: v Freq: 1
+Code: 1100010111101 Code Length: 13
+
+Char: m Freq: 2
+Code: 110001011111 Code Length: 12
+
+Char: 2 Freq: 32
+Code: 1100011 Code Length: 7
+
+Char: d Freq: 135
+Code: 11001 Code Length: 5
+
+Char: : Freq: 269
+Code: 1101 Code Length: 4
+
+Char: e Freq: 270
+Code: 1110 Code Length: 4
+
+Char: h Freq: 135
+Code: 11110 Code Length: 5
+
+Char: F Freq: 68
+Code: 111110 Code Length: 6
+
+Char: L Freq: 68
+Code: 111111 Code Length: 6

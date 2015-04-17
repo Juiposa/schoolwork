@@ -1,0 +1,48 @@
+Jeffrey-David Kapp
+Assigment 3
+CIS2750
+13 Mar 2014
+
+
+BEFORE EXECUTION: enter command 'export LD_LIBRARY_PATH={LD_LIBRARY_PATH}:lib/' 
+from program's main directory
+
+Simply type 'make' to compile.
+
+To run type 'java -cp bin/ gui.Dialogc'
+
+java
+yadc:
+
+yadc takes arguments are follows, all must be present and in this order
+
+./bin/yadc <file to compile> <working directory> <project name>
+
+file to compile: can be contextual - as in it doesn't have to be the full path from /home/
+
+working directory: can be "." for current wd
+
+project name: any string that does not violate what can be in a folder name
+
+
+The lack of any of these will cause a seg fault, don't do it :(
+
+
+see todo file to see everything I still haven't done
+
+
+Information:
+
+See javadoc for class descriptions, C stuff is in header files in include
+
+Buttons are as follows:
+New, Open, Save, SaveAs as straightforward and easily recognisable.
+Compile is the button with the arrows rotating.
+Run is the play button.
+Stop is the stop sign, and will kill the active test window.
+
+Compile and Run is under the Compile menu.
+
+
+
+

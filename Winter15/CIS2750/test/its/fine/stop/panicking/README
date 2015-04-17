@@ -1,0 +1,18 @@
+Jeffrey-David Kapp
+Assigment 4
+CIS2750
+3 April 2015
+
+
+Everything works now! Yay!
+
+Once the script is done installing, just find your way to the bin folder and type 'java Dialogc'
+
+Make sure the working directory is set to the directory the testing folders are in. As in whatever
+directory 'test1', 'test2' et cetera are in. Dialogc will plop compiled files into the correct folder.
+
+That's it. Horray!
+
+2750 bagged and tagged
+
+

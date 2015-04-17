@@ -1,0 +1,381 @@
+   0  $accept : start $end
+
+   1  start : config
+
+   2  config : statement config
+   3         | statement NEWLN config
+   4         | statement NEWLN
+   5         | statement
+   6         | NEWLN config
+   7         | NEWLN
+   8         | comments config
+
+   9  comments : COMMENT comments NEWLN
+  10           | COMMENT comments
+  11           | WORD comments
+  12           | WORD
+  13           | COMMENT
+  14           | EXCLAIM COMMENT
+
+  15  statement : WORD EQUALS value COLON
+
+  16  value : quoted_word
+  17        | WORD
+  18        | L_PAREN list
+
+  19  list : WORD COMMA list
+  20       | quoted_word COMMA list
+  21       | quoted_word R_PAREN
+  22       | WORD R_PAREN
+
+  23  quoted_word : QUOTE WORD QUOTE
+
+state 0
+	$accept : . start $end  (0)
+
+	COMMENT  shift 1
+	EXCLAIM  shift 2
+	NEWLN  shift 3
+	WORD  shift 4
+	.  error
+
+	start  goto 5
+	config  goto 6
+	statement  goto 7
+	comments  goto 8
+
+
+1: shift/reduce conflict (shift 1, reduce 13) on COMMENT
+1: shift/reduce conflict (shift 2, reduce 13) on EXCLAIM
+1: shift/reduce conflict (shift 9, reduce 13) on WORD
+state 1
+	comments : COMMENT . comments NEWLN  (9)
+	comments : COMMENT . comments  (10)
+	comments : COMMENT .  (13)
+
+	COMMENT  shift 1
+	EXCLAIM  shift 2
+	WORD  shift 9
+	NEWLN  reduce 13
+
+	comments  goto 10
+
+
+state 2
+	comments : EXCLAIM . COMMENT  (14)
+
+	COMMENT  shift 11
+	.  error
+
+
+state 3
+	config : NEWLN . config  (6)
+	config : NEWLN .  (7)
+
+	COMMENT  shift 1
+	EXCLAIM  shift 2
+	NEWLN  shift 3
+	WORD  shift 4
+	$end  reduce 7
+
+	config  goto 12
+	statement  goto 7
+	comments  goto 8
+
+
+4: shift/reduce conflict (shift 1, reduce 12) on COMMENT
+4: shift/reduce conflict (shift 2, reduce 12) on EXCLAIM
+4: shift/reduce conflict (shift 9, reduce 12) on WORD
+state 4
+	comments : WORD . comments  (11)
+	comments : WORD .  (12)
+	statement : WORD . EQUALS value COLON  (15)
+
+	EQUALS  shift 13
+	COMMENT  shift 1
+	EXCLAIM  shift 2
+	WORD  shift 9
+	NEWLN  reduce 12
+
+	comments  goto 14
+
+
+state 5
+	$accept : start . $end  (0)
+
+	$end  accept
+
+
+state 6
+	start : config .  (1)
+
+	.  reduce 1
+
+
+state 7
+	config : statement . config  (2)
+	config : statement . NEWLN config  (3)
+	config : statement . NEWLN  (4)
+	config : statement .  (5)
+
+	COMMENT  shift 1
+	EXCLAIM  shift 2
+	NEWLN  shift 15
+	WORD  shift 4
+	$end  reduce 5
+
+	config  goto 16
+	statement  goto 7
+	comments  goto 8
+
+
+state 8
+	config : comments . config  (8)
+
+	COMMENT  shift 1
+	EXCLAIM  shift 2
+	NEWLN  shift 3
+	WORD  shift 4
+	.  error
+
+	config  goto 17
+	statement  goto 7
+	comments  goto 8
+
+
+9: shift/reduce conflict (shift 1, reduce 12) on COMMENT
+9: shift/reduce conflict (shift 2, reduce 12) on EXCLAIM
+9: shift/reduce conflict (shift 9, reduce 12) on WORD
+state 9
+	comments : WORD . comments  (11)
+	comments : WORD .  (12)
+
+	COMMENT  shift 1
+	EXCLAIM  shift 2
+	WORD  shift 9
+	NEWLN  reduce 12
+
+	comments  goto 14
+
+
+10: shift/reduce conflict (shift 18, reduce 10) on NEWLN
+state 10
+	comments : COMMENT comments . NEWLN  (9)
+	comments : COMMENT comments .  (10)
+
+	NEWLN  shift 18
+	COMMENT  reduce 10
+	EXCLAIM  reduce 10
+	WORD  reduce 10
+
+
+state 11
+	comments : EXCLAIM COMMENT .  (14)
+
+	.  reduce 14
+
+
+state 12
+	config : NEWLN config .  (6)
+
+	.  reduce 6
+
+
+state 13
+	statement : WORD EQUALS . value COLON  (15)
+
+	L_PAREN  shift 19
+	QUOTE  shift 20
+	WORD  shift 21
+	.  error
+
+	quoted_word  goto 22
+	value  goto 23
+
+
+state 14
+	comments : WORD comments .  (11)
+
+	.  reduce 11
+
+
+15: reduce/reduce conflict (reduce 4, reduce 7) on $end
+state 15
+	config : statement NEWLN . config  (3)
+	config : statement NEWLN .  (4)
+	config : NEWLN . config  (6)
+	config : NEWLN .  (7)
+
+	COMMENT  shift 1
+	EXCLAIM  shift 2
+	NEWLN  shift 3
+	WORD  shift 4
+	$end  reduce 4
+
+	config  goto 24
+	statement  goto 7
+	comments  goto 8
+
+
+state 16
+	config : statement config .  (2)
+
+	.  reduce 2
+
+
+state 17
+	config : comments config .  (8)
+
+	.  reduce 8
+
+
+state 18
+	comments : COMMENT comments NEWLN .  (9)
+
+	.  reduce 9
+
+
+state 19
+	value : L_PAREN . list  (18)
+
+	QUOTE  shift 20
+	WORD  shift 25
+	.  error
+
+	quoted_word  goto 26
+	list  goto 27
+
+
+state 20
+	quoted_word : QUOTE . WORD QUOTE  (23)
+
+	WORD  shift 28
+	.  error
+
+
+state 21
+	value : WORD .  (17)
+
+	.  reduce 17
+
+
+state 22
+	value : quoted_word .  (16)
+
+	.  reduce 16
+
+
+state 23
+	statement : WORD EQUALS value . COLON  (15)
+
+	COLON  shift 29
+	.  error
+
+
+24: reduce/reduce conflict (reduce 3, reduce 6) on $end
+state 24
+	config : statement NEWLN config .  (3)
+	config : NEWLN config .  (6)
+
+	.  reduce 3
+
+
+state 25
+	list : WORD . COMMA list  (19)
+	list : WORD . R_PAREN  (22)
+
+	R_PAREN  shift 30
+	COMMA  shift 31
+	.  error
+
+
+state 26
+	list : quoted_word . COMMA list  (20)
+	list : quoted_word . R_PAREN  (21)
+
+	R_PAREN  shift 32
+	COMMA  shift 33
+	.  error
+
+
+state 27
+	value : L_PAREN list .  (18)
+
+	.  reduce 18
+
+
+state 28
+	quoted_word : QUOTE WORD . QUOTE  (23)
+
+	QUOTE  shift 34
+	.  error
+
+
+state 29
+	statement : WORD EQUALS value COLON .  (15)
+
+	.  reduce 15
+
+
+state 30
+	list : WORD R_PAREN .  (22)
+
+	.  reduce 22
+
+
+state 31
+	list : WORD COMMA . list  (19)
+
+	QUOTE  shift 20
+	WORD  shift 25
+	.  error
+
+	quoted_word  goto 26
+	list  goto 35
+
+
+state 32
+	list : quoted_word R_PAREN .  (21)
+
+	.  reduce 21
+
+
+state 33
+	list : quoted_word COMMA . list  (20)
+
+	QUOTE  shift 20
+	WORD  shift 25
+	.  error
+
+	quoted_word  goto 26
+	list  goto 36
+
+
+state 34
+	quoted_word : QUOTE WORD QUOTE .  (23)
+
+	.  reduce 23
+
+
+state 35
+	list : WORD COMMA list .  (19)
+
+	.  reduce 19
+
+
+state 36
+	list : quoted_word COMMA list .  (20)
+
+	.  reduce 20
+
+
+State 1 contains 3 shift/reduce conflicts.
+State 4 contains 3 shift/reduce conflicts.
+State 9 contains 3 shift/reduce conflicts.
+State 10 contains 1 shift/reduce conflict.
+State 15 contains 1 reduce/reduce conflict.
+State 24 contains 1 reduce/reduce conflict.
+
+
+12 terminals, 8 nonterminals
+24 grammar rules, 37 states

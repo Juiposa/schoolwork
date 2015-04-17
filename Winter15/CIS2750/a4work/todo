@@ -1,0 +1,8 @@
+Need to fix
+
+--yadc does not parse backwards
+--action listeners hook up properly
+--keyboard acceleration
+--compiling an empty file does not fail gracefully   
+--compilation errors not in terminal
+--method headers in all java files

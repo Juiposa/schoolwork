@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 
 /**
  * Exit comfirmation popup
+ * Reused code for CIS2430
  * @author Jeff Kapp 0832671
  * @since 27 Nov 2014
  *

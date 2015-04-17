@@ -1,0 +1,27 @@
+Jeffrey-David Kapp
+0832671
+CIS3110; Assignment 1
+30 Jan 2015
+
+RUNNING;
+--------
+
+To run, type 'make' to compile; then ./bin/msh
+
+REPORT;
+-------
+
+To parse commands, I am using lex.c. I am specifically using the copy modded by Tao Xu that was posted on Moodle.
+
+The extra third command we were to implement I've done is a working version of 'cd'.
+
+The entire program is nested in an infinite input loop. Once input is gathered and it checks if any commands where actually entered, it will send the args array to the execute function 
+which contains most of the decision structures. First thing it checks is if the command entered is 'exit', and will terminate the shell if it is. Afterwards it checks if the command 
+entered is one of the three custom commands we were to implement. If it is not, it moves onto the actual process of running a program. 
+
+It begins this by checking for the ampersand at the end of the command line and set the block variable or not. Once this check is done, we fork and go into the usual decision structure 
+for forking to determine if the process running the code is the parent or child. If the process is the parent, it checks if the block variable is set or not; if is not, it waits for the 
+child to finish; if it is not, it continues on with its day.
+
+If the process is the child, it checks if there less-than or greater-than symbols. If there are, it'll reopen stdin or stdout, depending, into a stream pointing to whatever file was 
+specified. If not or after that is done, it simply execvp the command and does whatever it now does. Piping has not implemented in this program. Sorry :( 

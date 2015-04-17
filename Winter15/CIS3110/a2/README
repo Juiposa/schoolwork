@@ -1,0 +1,32 @@
+/*************************
+Jeffrey-David Kapp 0832671
+CIS3110 Assignment 2
+27 February 2015
+*************************/
+
+compile via 'make'
+
+executable with the proper name will be found /bin
+
+Report
+------
+
+The simulator operates at all times under in an assumed Round Robin fashion. Conditionals that acutally carry RR fucntionality
+are bound to if the quantum has been set or not. If the quantum is not set the algorithm will run, finger quotes, Round Robin, as if it the
+quantum was infinite.
+
+Switch overhead is very static and is only ever considered when a thread is being switched out of running. At that point, a static value
+is added to the switch ticker, which counts down to 0, allowing a new thread to be pulled from the ready queue. 
+
+i) Overhead is included for the very first thread. The first thread will only enter running state once the switch ticker is 0.
+
+ii) If the CPU remains idle for the duration of the switch overhead, any thread that enters the ready afterwards queue will be immediately set 
+to running without overhead. 
+
+iii) Switch overhead is always added, regardless if the ready queue is empty or not.
+
+iv) Like above, overhead is included always, even if the thread gets to keep processing.
+
+I know. I could fix these, but I'm lazy. :P
+
+Have a great day!

@@ -1,0 +1,16 @@
+/************************************
+Jeffrey-David Kapp
+CIS3490 Assignment 3 Huffman Encoding
+26 February 2015
+************************************/
+
+Type make to compile
+
+Executable is bin/Huffman.
+
+Can take the file you want it to *compress* as a command line argument.
+Otherwise, with no argument, will default to file provided on website.
+
+Output from the prog can be found in dat/output.txt
+
+Have a great day! :D 
