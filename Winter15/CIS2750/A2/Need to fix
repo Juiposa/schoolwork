@@ -1,0 +1,8 @@
+Need to fix
+
+--keyboard acceleration
+--compiling an empty file does not fail gracefully
+--exit message tidying
+--new checks for modification
+--popup for successful compilation
+--compilation errors not in terminal

@@ -1,0 +1,46 @@
+Jeffrey-David Kapp
+Assigment 2
+CIS2750
+13 Feb 2014
+
+
+BEFORE EXECUTION: enter command 'export LD_LIBRARY_PATH={LD_LIBRARY_PATH}:bin/' 
+from program's main directory
+
+Simply type 'make' to compile.
+
+To run type 'java -cp bin/ gui.Dialogc'
+
+Information:
+
+See javadoc for class descriptions, C stuff is in header files in include/
+
+Buttons are as follows:
+New, Open, Save, SaveAs as straightforward and easily recognisable.
+Compile is the button with the arrows rotating.
+Run is the play button.
+Stop is the stop sign, and will kill the active test window.
+
+Compile and Run is under the Compile menu.
+
+
+Known issues and what I've left out:
+
+There is no keyboard acceleration. Sorry :(
+
+C *sometimes* (note: only when there are syntax errors in the file) causes Java 
+to freak out, and will do so in situations it shouldn't otherwise; like multiple
+passes of the parser over the exact same file will cause issues with the JVM some
+times but not others. It stopped happening towards the end of development, but I 
+can't guarantee it doesn't happen anymore. Damn JNI.
+
+ActionListeners and Data types for buttons and fields respectively aren't used 
+in any way. Buttons simply print their action command to the status area and 
+accessors and mutators for fields use strings only.
+
+Just incase, do not touch anything dat/, please, pretty please.
+
+And thats it. I hope you don't get too bored marking. Have a good day!
+
+
+

@@ -1,0 +1,38 @@
+Jeffrey-David Kapp
+Assigment 1
+CIS2750
+23 Jan 2015
+
+
+Running
+-------
+
+'make all' or 'make' will build the library and place the *.a file in the main directory
+
+'make test' will link it to a main function in a specified test function.
+
+'make clean' do what 'make clean' do. *.o file genocide
+
+
+Known Issues and Things to Know
+-------------------------------
+
+IMPORTANT: Program prints error, warning, and success message to STDERR at pretty much every stage, expecially parsing.
+
+1) Parameteres that have no been registered WILL be ignored when parsed; even if room for the parameter is present in PM
+
+2) The parser parses based on what it expects, and enters a param_value type based on this. If it expects a integer, it will atoi() the parsed 
+string, even if it is a float or string. Likewise for other data types. The program will not fail, but give you back whatever shenanigans you supply 
+it. :D So if your integer is 0, probably cause it read a string and put it thorugh atoi().
+
+3) By extension of the above, the parser doesn't care about "". It treats them as "I need to start recording whitespace" and nothing else. Strings will still be read and entered into a parameter properly if expected regardless if quotes are present. Maybe some of the following will happen:
+
+phrase="Jeff Kapp is awesome";
+
+will be read in an stored as 'Jeff Kapp is awesome'
+
+phrase=Jeff Kapp is awesome;
+
+will be read and stored as JeffKappisawesome; as it ignores whitespace outside quotes.
+
+Both are valid ways to write strings and both will work; just if you want whitespace, put'em in quotes.
