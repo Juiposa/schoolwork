@@ -1,0 +1,4 @@
+# schoolwork
+Work completed for courses at the University of Guelph.
+
+Work was not actually 91% bash script, just the one install script with tens of thousands of lines of binary.
