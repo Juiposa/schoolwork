@@ -1,0 +1,19 @@
+
+[PILOT] *** Pilot 3.0a for MPI - University of Guelph
+[PILOT] *** Available MPI processes: 4; tags for channels: 2147483647
+[PILOT] *** Running with error checking at Level 1
+[PILOT] *** Command-line options:
+[PILOT] ***  
+[PILOT] *** Allocated Pilot processes: 4; channels: 6; bundles: 1
+
+
+NUMBER OF STRINGS: 8360639
+numStr per worker 2786879
+WORKER 0: numstr 2786881, start index 0
+WORKER 1: numstr 2786879, start index 2786881
+WORKER 2: numstr 2786879, start index 5573760
+0FOUND 291635
+1FOUND 291478
+2FOUND 291574
+874687 PALINDROMES FOUND
+TIME TAKEN8.606

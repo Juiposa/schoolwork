@@ -1,0 +1,10 @@
+>>> V >>V
+V >V> >V 
+>  > >V>V
+ V> V>>V>
+V>  >V >V
+  V VVV V
+ V V>>V>>
+V V  >>VV
+VVVV  >> 
+p2 b9 t3 c60 m100 s511 Iterations: 5 Termination Percent: 66 Time: 0.0
