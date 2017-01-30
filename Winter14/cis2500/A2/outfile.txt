@@ -1,0 +1,8 @@
+Message: message=Jeff
+Result: .--- . ..-. ..-. 
+Message: message=ockaosffad
+Result: --- -.-. -.- .- --- ... ..-. ..-. .- -.. 
+Message: message=fuck
+Result: ..-. ..- -.-. -.- 
+Message: message=sdfasdf
+Result: ... -.. ..-. .- ... -.. ..-. 

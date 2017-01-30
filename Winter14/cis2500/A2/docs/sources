@@ -1,0 +1,8 @@
+
+Learned basic xml concepts from:
+http://feinan.com/2011/09/29/parsing-xhtml-in-c-%E2%80%93-a-libxml2-tutorial/
+
+And made heavy reference to the libxml2 documentation and API:
+http://www.xmlsoft.org/html/index.html
+
+As well, got help from Ricky Break, Trevor Thompson and Nick Beirne in understanding libxml2 better.

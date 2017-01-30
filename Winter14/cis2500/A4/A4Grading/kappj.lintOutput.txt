@@ -1,0 +1,16 @@
+studentWork/kappj/coursework/A4/src/fileIO.c:48:  Missing space before ( in while(  [whitespace/parens] [5]
+Done processing studentWork/kappj/coursework/A4/src/fileIO.c
+studentWork/kappj/coursework/A4/src/linkedList.c:84:  Missing space before ( in while(  [whitespace/parens] [5]
+studentWork/kappj/coursework/A4/src/linkedList.c:201:  Missing space before ( in while(  [whitespace/parens] [5]
+studentWork/kappj/coursework/A4/src/linkedList.c:204:  Could not find a newline character at the end of the file.  [whitespace/ending_newline] [5]
+Done processing studentWork/kappj/coursework/A4/src/linkedList.c
+studentWork/kappj/coursework/A4/src/main.c:67:  Could not find a newline character at the end of the file.  [whitespace/ending_newline] [5]
+Done processing studentWork/kappj/coursework/A4/src/main.c
+studentWork/kappj/coursework/A4/include/main.h:0:  No #ifndef header guard found, suggested CPP variable is: A4_INCLUDE_MAIN_H_  [build/header_guard] [5]
+studentWork/kappj/coursework/A4/include/main.h:44:  Could not find a newline character at the end of the file.  [whitespace/ending_newline] [5]
+Done processing studentWork/kappj/coursework/A4/include/main.h
+Category 'build/header_guard' errors found: 1
+Category 'whitespace/parens' errors found: 3
+Category 'whitespace/ending_newline' errors found: 3
+Total errors found: 7
+LOC: 538

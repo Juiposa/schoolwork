@@ -1,0 +1,23 @@
+Jeffrey-David Kapp    0832671
+January 24, 2013
+CIS 2500              Assignment One
+*************
+compiling the program
+*************
+Simply type 'make' into the terminal and the program will compile.
+
+*************
+running the program
+*************
+from the programs main directory, type './src/A1' to run
+
+The i,j,k, and l keys will be used for movement.
+
+As well press q to quit
+
+*********
+known limitations
+********
+When restarting the program using its provided function, the remnants of the previous maze with stay on screen
+
+As well, the maze is very ugly.

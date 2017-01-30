@@ -1,0 +1,18 @@
+Assignment four grading results 
+Code version graded (git branch): * master
+
+Total time incorrect. Expected: 02:15:32
+Found: 0:0:0
+ Time difference of 15 minutes and 32 seconds
+Average size incorrect.  Expected 4389.59 Found: 0.0
+Line Number:1
+ 	expected: 02:15:32
+ 	found: 0:0:0
+Line Number:2
+ 	expected: 4389.59
+ 	found: 0
+number of lint errors:  7
+number of errors in music file: 39
+different in minutes: 15
+difference in seconds: 32
+difference in average: 4389.590000

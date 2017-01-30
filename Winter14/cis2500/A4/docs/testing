@@ -1,0 +1,32 @@
+Testing using files:
+
+Given:
+
+Bruce Cockburn,Keep it open,114,2252.8,b
+The Kills,Wild Charms,75,2457.6,a
+Bruce Cockburn,Change your mind,148,2969.6,b
+J.J. Ipsen And The Paper Crown,April & May,129,3072,b
+Bruce Cockburn,Together Alone,170,3379.2,a
+Whale Tooth,Marlboro Beach Bonanza,108,3481.6,b
+
+Expected:
+	
+Together Alone (Bruce Cockburn):170[3379.20]
+Wild Charms (The Kills):75[2457.60]
+Keep it open (Bruce Cockburn):114[2252.80]
+Change your mind (Bruce Cockburn):148[2969.60]
+April & May (J.J. Ipsen And The Paper Crown):129[3072.00]
+Marlboro Beach Bonanza (Whale Tooth):108[3481.60]
+
+Actual Output:
+
+Together Alone (Bruce Cockburn):170[3379.20]
+Wild Charms (The Kills):75[2457.60]
+Keep it open (Bruce Cockburn):114[2252.80]
+Change your mind (Bruce Cockburn):148[2969.60]
+April & May (J.J. Ipsen And The Paper Crown):129[3072.00]
+(null)
+
+Program is not printing very last value in the list, happening with lists of every size.
+
+Issue was with logic in the printRecord function not iterating as decision was made on struct too far forawrd in the list. 

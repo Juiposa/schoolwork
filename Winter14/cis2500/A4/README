@@ -1,0 +1,27 @@
+***********
+Compilation
+***********
+
+Type one of the following to compile:
+
+"make test" - will compile the linked list files to test the linked list, excutable will be called "listTest"
+
+"make music" - proper program, executable will be called "list"
+
+*****************
+Using the Program
+*****************
+
+type "./bin/listTest" to test the list
+
+type ".bin/list filepath" to run the proper program
+replace "filepath" with the file path of the text file to be read from. filepath must lead from the program's main directory
+
+************
+Known issues
+************
+
+Program will flag a command line that does not contain a second parametre; but if given gibberish, will still segfault. 
+
+Occasional memory issue wherein the first few characters of the first print out will become random symbols. All subsequent 
+prints are without issue. 

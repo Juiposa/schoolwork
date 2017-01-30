@@ -1,0 +1,30 @@
+***********************
+Compilation and Running
+***********************
+
+Navigate to the main directory of the program in a terminal
+
+
+
+Type 'make' and then './bin/rogue filepath' to run the program. replace "filepath" with the path to the file you'd like to use.
+
+There is a sample input file in assets/ called room.txt.
+
+
+*****************
+Known Limitations
+*****************
+
+The program will strictly not accept any input file other than the proper format.
+It will segfault under most circumstances that an improper input file is given. 
+
+STRONG WARNING:
+A very circumstantial bug has been encountered were certain room dimensions cause memory problems with no 
+noticable patern in the room dimensions. It is extremely diffcult to replicate. Please be keep this in 
+mind when giving a file.   
+
+************
+Instructions
+************
+
+Navigate the screen with A, S, D and W. Press Q to quit to the exit menu, where you will have a choice to either quit or restart.

@@ -1,0 +1,10 @@
+Program was tested by:
+
+-isolating each of the functions and compiling them seperately to ensure they completed their intended functions correctly
+-combinde them and ensured they would compile
+-running through dozens of test runs and:
+	-tweaking the visuals accordingly
+	-making sure printing to files worked
+	-ensuring translations to morsecode and back were displayed correctly
+
+	

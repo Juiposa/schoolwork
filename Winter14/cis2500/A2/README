@@ -1,0 +1,29 @@
+Jeffrey-David Kapp    0832671
+January 24, 2013
+CIS 2500              Assignment Two
+*************
+compiling the program
+*************
+Simply type 'make' into the terminal and the program will compile.
+
+*************
+running the program
+*************
+from the programs main directory, type './src/A2' to run
+
+Type any message into the terminal and press enter once you've entered it.
+
+Type '-help' at anytime to get instructions
+
+To enter morsecode, make sure there are two spaces between words and you use only
+'.' and '-'. There should be a space between each morsecode character
+
+*********
+known limitations
+********
+
+if attempting to enter morsecode, syntax must adhear exactly
+
+Be mindful of warnings that pop up in the top left corner, they are easy to miss.
+
+

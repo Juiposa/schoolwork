@@ -1,0 +1,4 @@
+Use of http://tldp.org/HOWTO/NCURSES-Programming-HOWTO/ to get an idea of ncurses functions
+
+As well had help from Michael McNeely and Ricky Break in learning more advanced topic that I originally tried to apply to my code
+
