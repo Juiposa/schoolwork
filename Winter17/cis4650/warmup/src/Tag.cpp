@@ -1,19 +1,13 @@
-#include "sgml.h"
+/* Tag.cpp                                                      */
+/* Tag class method definitons                                  */
+/* Created by Jeffrey-David Kapp; 0832671                       */
+/* 1 Feburary 2017 - Last modifed 1/2/2017                      */
 
-class Tag {
-        tag_t tagType;
-        string value;
-    public:
-        Tag ( string value );
-        tag_t getTagType();
-        string getValue();
-    private:
-        void NormaliseTag();
-        void DetermineTagType();
-}
+#include "sgml.h"
+#include "Tag.h"
 
 Tag::Tag(string value) {
-    this.value = value;
+    this->value = value;
     NormaliseTag();
     DetermineTagType();
 }
@@ -24,32 +18,31 @@ void Tag::NormaliseTag() {
     transform(value.begin(), value.end(), value.begin(), ::toupper);
     for (i = 0; i < value.length(); i++ ) {
         if ( start == 0 && isalnum(value.at(i)) != 0 ) {
-
+            start = i;
         } else if ( start != 0 && end == 0 && isalnum(value.at(i)) == 0 ) {
             end = i;
-            break;
         }
     }
     value = value.substr( start, end-start );
 }
 
 void Tag::DetermineTagType() {
-    if ( this.value.compare("TEXT") == 0 ) {
-        this.tagType = TEXT;
-    } else if ( this.value.compare("DATE") == 0 ) {
-        this.tagType = DATE;
-    } else if ( this.value.compare("DOC") == 0 ) {
-        this.tagType = DOC;
-    } else if ( this.value.compare("DOCNO") == 0 ) {
-        this.tagType = DOCNO;
-    } else if ( this.value.compare("HEADLINE") == 0 ) {
-        this.tagType = HEADLINE;
-    } else if ( this.value.compare("LENGTH") == 0 ) {
-        this.tagType = LENGTH;
-    } else if ( this.value.compare("P") == 0 ) {
-        this.tagType = P;
+    if ( value.compare("TEXT") == 0 ) {
+        tagType = TEXT;
+    } else if ( value.compare("DATE") == 0 ) {
+        tagType = DATE;
+    } else if ( value.compare("DOC") == 0 ) {
+        tagType = DOC;
+    } else if ( value.compare("DOCNO") == 0 ) {
+        tagType = DOCNO;
+    } else if ( value.compare("HEADLINE") == 0 ) {
+        tagType = HEADLINE;
+    } else if ( value.compare("LENGTH") == 0 ) {
+        tagType = LENGTH;
+    } else if ( value.compare("P") == 0 ) {
+        tagType = P;
     } else {
-        this.tagType = IRRELEVANT;
+        tagType = IRRELEVANT;
     }
 }
 
@@ -58,5 +51,5 @@ tag_t Tag::getTagType() {
 }
 
 string Tag::getValue() {
-    return value
+    return value;
 }

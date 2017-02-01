@@ -9,16 +9,27 @@
     string yylval;
 %}
 
-number      [0-9]+
-word        [a-zA-Z0-9]+
-tag_name    [a-zA-Z0-9=" ]+
-whitespace  [ \t\n]+
+char            [a-zA-Z0-9]
+integer         [0-9]+
+number          ((\+|\-)?{integer}(.{integer})?)
+word            {char}+
+hypenated       ({word}(\-{word})+)
+apostrophized   (({hypenated}|{word})('({hypenated}|{word}))+)
+punctuation     [^{word}]
+tag_name        [a-zA-Z0-9=" ]+
+whitespace      [ \t\n]+
 
 %%
 
-"<"{tag_name}">"      { return OPEN_TAG; }
-"</"{tag_name}">"     { return CLOSE_TAG; }
-{whitespace}          { /*NOOP: whitespace*/ }
+{whitespace}                            { /*NOOP: whitespace*/                      }
+{apostrophized}                         { yylval = yytext; return APOSTROPHIZED;    }
+{hypenated}                             { yylval = yytext; return HYPHENATED;       }
+"<"{tag_name}">"                        { yylval = yytext; return OPEN_TAG;         }
+"</"{tag_name}">"                       { yylval = yytext; return CLOSE_TAG;        }
+{number}                                { yylval = yytext; return NUMBER;           }
+{word}                                  { yylval = yytext; return WORD;             }
+{punctuation}                           { yylval = yytext; return PUNCTUATION;      }
+<<EOF>>                                 { return ENDFILE;                           }
 
 %%
 

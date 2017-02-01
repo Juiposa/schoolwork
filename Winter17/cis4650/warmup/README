@@ -1,0 +1,10 @@
+SGML Scanner
+
+This is a scanner for Standard Generalized Markup Language. It will check if open
+and closed tags are properly paired and will also tokenise and output relevant
+information.
+
+To build, type "make". To clean build, type "make clean" and then "make" again.
+
+To run, type "./scanner < input.txt", where "input.txt" is the SGML file you want
+the scanner to check.

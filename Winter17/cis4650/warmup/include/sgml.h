@@ -1,7 +1,7 @@
 /* scanner.h                                                    */
 /* Scanner to tokenise and output tags of a SGML document       */
 /* Created by Jeffrey-David Kapp; 0832671                       */
-/* 25 January 2017 - Last modifed 25/1/2017                     */
+/* 25 January 2017 - Last modifed 1/2/2017                     */
 
 #include <cstdio>
 #include <cstdlib>
@@ -18,7 +18,7 @@ typedef enum {
 
     WORD, NUMBER, APOSTROPHIZED, HYPHENATED, PUNCTUATION,
 
-    EOF
+    ENDFILE
 } token_t;
 
 typedef enum {
@@ -35,7 +35,10 @@ typedef struct TokenStack {
 } TokenStack;
 
 //prints a token
-void PrintToken( token_t tokenType, string value );
+void printToken( token_t tokenType, string value );
 
 //destroys whole stack
 void destroyStack( TokenStack * stack );
+
+//gets token
+token_t getToken();
