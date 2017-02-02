@@ -1,7 +1,7 @@
 /* scanner.cpp                                                  */
 /* Main source file for the SGML scanner                        */
 /* Created by Jeffrey-David Kapp; 0832671                       */
-/* 25 January 2017 - Last modifed 1/2/2017                      */
+/* 25 January 2017 - Last modifed 2/2/2017                      */
 
 
 #include "sgml.h"
@@ -21,16 +21,20 @@ int main( int argc, char* argv[] ) {
     while( (tokenType = getToken()) != ENDFILE ) {
         if ( tokenType == OPEN_TAG ) { //open tags get pushed onto the stack
             newTag = new Tag(yylval);
-            if ( newTag->tagType == P && tagStack.top()->tagType == IRRELEVANT ) { //paragraph tags are only relevant if they're contained within another relevant tag
+            if ( !tagStack.empty() && tagStack.top()->tagType == IRRELEVANT  ) { //tags wrapped in IRRELEVANT tags are also IRRELEVANT
                 newTag->tagType = IRRELEVANT;
             }
             tagStack.push(newTag);
-            //DEBUG fprintf(stdout, "OPEN TAG: %s | %s\n", yylval.c_str(), newTag->value.c_str() );
+            //DEBUG fprintf(stdout, "OPEN TAG: %s\n", newTag->value.c_str() );
             if ( newTag->tagType != IRRELEVANT ) { //only relevant tags are printed
                 printToken(OPEN_TAG, newTag->value);
             }
         } else if ( tokenType == CLOSE_TAG ) { //close tags pop top of stack off and checks if it matches an open tag
             newTag = new Tag(yylval);
+            if ( !tagStack.empty() && tagStack.top()->tagType == IRRELEVANT ) { //tags wrapped in IRRELEVANT tags are also IRRELEVANT
+                newTag->tagType = IRRELEVANT;
+            }
+            //DEBUG fprintf(stdout, "CLOSE TAG: %s\n", newTag->value.c_str() );
             if ( newTag->value.compare(tagStack.top()->value) == 0 ) { //close tag matches an open tag
                 if ( newTag->tagType != IRRELEVANT ) { //only relevant tags are printed
                     printToken( CLOSE_TAG, newTag->value );
@@ -40,7 +44,7 @@ int main( int argc, char* argv[] ) {
                 tagStack.pop();
                 delete newTag;
             } else { //close tag doesn't match an open tag; indicating a syntax error
-                fprintf( yyout, "ERROR: Invalid Syntax on close tag; Expecting %s, but got %s\n", tagStack.top()->value.c_str(), newTag->value.c_str() );
+                fprintf( stderr, "ERROR: Invalid Syntax on close tag; Expecting %s, but got %s\n", tagStack.top()->value.c_str(), newTag->value.c_str() );
                 delete newTag;
             }
         } else if ( tagStack.top()->tagType != IRRELEVANT ) { //print the token if its not wrapped in an IRRELEVANT tag
@@ -48,14 +52,14 @@ int main( int argc, char* argv[] ) {
         }
     }
     if(!tagStack.empty()) {
-        fprintf( yyout, "ERROR: Unclosed tags remain:\n" );
+        fprintf( stderr, "ERROR: Unmatched tags remain:\n" );
         while(!tagStack.empty()) {
-            fprintf( yyout, "%s ", tagStack.top()->value.c_str() );
+            fprintf( stderr, "%s ", tagStack.top()->value.c_str() );
             newTag = tagStack.top();
             tagStack.pop();
             delete newTag;
         }
-        fprintf(stdout, "\n" );
+        fprintf(stderr, "\n" );
     }
     return 0;
 }

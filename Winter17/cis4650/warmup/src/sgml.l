@@ -1,7 +1,7 @@
 /* sgml.l                                                       */
 /* Flex specification for Standard Generalized Markup Language  */
 /* Created by Jeffrey-David Kapp; 0832671                       */
-/* 25 January 2017 - Last modifed 25/1/2017                     */
+/* 25 January 2017 - Last modifed 1/2/2017                     */
 
 %{
     #include "sgml.h"
