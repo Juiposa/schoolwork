@@ -1,0 +1,32 @@
+Base Images
+noisy1:               4.2646395152801 
+noisy2:               217.25471608597718 
+noise_1:              5.808163490833216 
+noise_2:              14.145210736790654 
+photogravure:         19.686679827237555 
+eg3_gaussianNoise:    569.8636042892435 
+
+Truncated median.
+noisy1:               3.885652747816108 
+noisy2:               8.994914606924757 
+noise_1:              2.041803858267552 
+noise_2:              2.9665899815134678 
+photogravure:         3.519008251708588 
+eg3_gaussianNoise:    8.733306421015241 
+
+Mean.
+noisy1:               1.0003292713929084 
+noisy2:               2.2694890180676115 
+noise_1:              1.0058616487201002 
+noise_2:              1.0060253234043999 
+photogravure:         1.0002376641622737 
+eg3_gaussianNoise:    3.1044204951974064 
+
+Nagao-Matsuyama
+noisy1:               9.851126881142052 
+noisy2:               48.85440988325801 
+noise_1:              4.888797499767894 
+noise_2:              7.854096623489128 
+photogravure:         11.29715091376557 
+eg3_gaussianNoise:    56.98885766487487 
+
