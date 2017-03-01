@@ -1,0 +1,23 @@
+SGML Scanner
+
+Jeffrey-David Kapp 0832671
+
+This is a scanner for Standard Generalized Markup Language. It will check if open
+and closed tags are properly paired and will also tokenise and output relevant
+information.
+
+To build, type "make". To clean build, type "make clean" and then "make" again.
+
+To run, type "./scanner < input.txt", where "input.txt" is the SGML file you want
+the scanner to check.
+
+Possible improvement that could be made is including some of the fucntionality in
+the main program loop into an customised stack class that inherits from std::stack.
+
+TESTING:
+
+In the file test.txt found in the main directory is a series of tests I used
+to test the robustness of my regexs, stack, and program in general. With regards
+to the regex, I was making sure that all possible fringe cases were covered and
+resulted in correct output. The APOSTROPHIZED, HYPHENATED and NUMBER are the ones
+most tested as they have the most elaborate regexs.

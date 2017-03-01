@@ -1,0 +1,36 @@
+<DOC one=attribute two=attributes three=attributes ha=haha>
+<DOCNO> LA010190-0001 </DOCNO>
+<DOCID> 156144 </DOCID>
+<date attribute="je suis un test">
+<P>
+January 1, 1990, Monday, Home Edition
+i'am'apostrophised
+and-i-am-also-hyphenated
+i'am'also'apostrophised
+a---a
+a'''a
+apostrophy-hyphen'mixeroo
+a'e'i'o'u'''
+a-e-i-o-u---
+99.99
+-0.67
++13.37
++1337
+-1867
+</p>
+</date>
+
+<Section>
+I shouldn't be printed
+<p>
+Neither should I.
+</p>
+<text>
+I shouldn't be either.
+</text>
+</Section>
+
+<matchedtag>
+</matchedtag>
+<unmatchedtag>
+</doc>

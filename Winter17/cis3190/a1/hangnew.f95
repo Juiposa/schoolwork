@@ -79,7 +79,7 @@ program hangman
                  write (*,*) " "
                  write (*,*) "What is your guess? "
                  read (*,*) guess
-                 do i = 1,26 !guess  validation loop
+                 do i = 1,26 !guess verification
                      if (letters(i) == " ") then
                          total_guesses=total_guesses+1
                          letters(i) = guess
@@ -145,7 +145,7 @@ program hangman
      end do !end master loop
 end
 
-!sub routine - updating the hangee with extra body parts and informing the player
+!sub routine - updating the victim with extra body parts based on the number of incorrect guesses and informing the player
 subroutine update_gallows( incorrect_guesses_s, gallows_s )
     integer :: incorrect_guesses_s
     character :: gallows_s(12,12)
@@ -153,18 +153,18 @@ subroutine update_gallows( incorrect_guesses_s, gallows_s )
     select case (incorrect_guesses_s)
         case (1)
             write (*,*) "First we draw a head."
-            gallows_s(3,6) = "-"; gallows_s(3,7) = "-"; gallows_s(3,8) = "-"; gallows_s(4,5) = "("; !first guess
+            gallows_s(3,6) = "-"; gallows_s(3,7) = "-"; gallows_s(3,8) = "-"; gallows_s(4,5) = "(";
             gallows_s(4,6) = "."
             gallows_s(4,8) = "."; gallows_s(4,9) = ")"; gallows_s(5,6) = "-"; gallows_s(5,7) = "-";
             gallows_s(5,8) = "-"
         case (2)
             write (*,*) "Now we draw a body."
-            do i = 6,9 !second guess
+            do i = 6,9
                 gallows_s(i,7) = "x"
             end do
         case (3)
             write (*,*) "Next we draw an arm."
-            do i = 4,7 !third guess
+            do i = 4,7
                 gallows_s(i,i-1) = "\"
             end do
         case (4)
