@@ -8,13 +8,16 @@
 #include "cminus.h"
 #include "y.tab.h"
 
-string inString;
+string tokenString;
+
 %}
 
 letter      [a-zA-z]
 digit       [0-9]
 identifier  {letter}+
 number      {digit}+
+newline     \n
+whitespace  [ \t\r]+
 
 %%
 
@@ -52,4 +55,22 @@ number      {digit}+
 
 {newline}       { lineno++;             }
 {whitespace}    {/*NOOP*/               }
-<<EOF>>         { return ENDFILE;       }
+.               { return ERROR;         }
+
+
+%%
+
+int getToken() {
+    static bool firstTime = true;
+    int curToken;
+    if (firstTime) {
+        firstTime = false;
+        lineno++;
+        yyin = sourceFile;
+    }
+    curToken = yylex();
+    tokenString = yytext;
+    fprintf(outputFile, "Line: %d ", lineno );
+    printToken( curToken, tokenString );
+    return curToken;
+}

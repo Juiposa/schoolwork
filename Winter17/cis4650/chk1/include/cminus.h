@@ -11,10 +11,24 @@
 #include <cstdlib>
 #include <cstring>
 #include <cctype>
+#include <iostream>
 #include <string>
 
+using namespace std;
 
 extern FILE * sourceFile;
+extern FILE * outputFile;
+extern string tokenString;
 extern int lineno;
+
+//returns the next token in source file
+int getToken();
+
+//kick off point for parser
+void parse();
+
+//prints token
+void printToken( int tokenType, string tokenStr );
+
 
 #endif

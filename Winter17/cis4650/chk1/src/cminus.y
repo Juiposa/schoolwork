@@ -8,20 +8,39 @@
 
 #include "cminus.h"
 
+extern int yyparse(void);
+
+static int yylex(void) {
+    return getToken();
+}
+
+void parse() {
+    yyparse();
+}
+
+extern int yychar;
+
+void yyerror(string message) {
+    fprintf(outputFile, "ERROR: Syntax error at line %d: %s\n", lineno, message.c_str() );
+    fprintf(outputFile, "Culprit token: ");
+    printToken(yychar, tokenString);
+    return;
+}
+
 %}
 
 //terminating tokens
-%token ENDFILE, ERROR
+%token ENDFILE ERROR
 
 //keywords
-%token ELSE, IF, INT, RETURN, VOID, WHILE
+%token ELSE IF INT RETURN VOID WHILE
 
 //identifiers and numbers
-%token ID, NUM
+%token ID NUM
 
 //special symbols
-%token PLUS, MINUS, MULTI, DIVIDE, LT, GT, LE, GE, EQ, NE, ASSIGN, SEMICLN, COMMA
-%token LPAREN, RPAREN, LBRACKET, RBRACKET, LBRACE, RBRACE, OPENCOMMENT, CLOSECOMMENT
+%token PLUS MINUS MULTI DIVIDE LT GT LE GE EQ NE ASSIGN SEMICLN COMMA
+%token LPAREN RPAREN LBRACKET RBRACKET LBRACE RBRACE OPENCOMMENT CLOSECOMMENT
 
 %%
 
@@ -64,11 +83,11 @@ compound_stmt       : LBRACE local_declarations statement_list RBRACE
                     ;
 
 local_declarations  : local_declarations var_declaration
-                    | empty //fix me
+                    | //empty
                     ;
 
 statement_list      : statement_list statement
-                    | empty //fix me
+                    | //empty
                     ;
 
 statement           : expression_stmt
@@ -139,7 +158,7 @@ call                : ID LPAREN args RPAREN
                     ;
 
 args                : args_list
-                    | empty //fix me
+                    | //empty
                     ;
 
 args_list           : args_list COMMA expression
