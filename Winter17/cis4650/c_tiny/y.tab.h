@@ -39,58 +39,59 @@
    /* Put the tokens into the symbol table, so that GDB and other debuggers
       know about them.  */
    enum yytokentype {
-     ENDFILE = 258,
-     ERROR = 259,
+     IF = 258,
+     THEN = 259,
      ELSE = 260,
-     IF = 261,
-     INT = 262,
-     RETURN = 263,
-     VOID = 264,
-     WHILE = 265,
+     END = 261,
+     REPEAT = 262,
+     UNTIL = 263,
+     READ = 264,
+     WRITE = 265,
      ID = 266,
      NUM = 267,
-     PLUS = 268,
-     MINUS = 269,
-     MULTI = 270,
-     DIVIDE = 271,
-     LT = 272,
-     GT = 273,
-     LE = 274,
-     GE = 275,
-     EQ = 276,
-     NE = 277,
-     ASSIGN = 278,
-     SEMICLN = 279,
-     COMMA = 280,
-     LPAREN = 281,
-     RPAREN = 282,
-     LBRACKET = 283,
-     RBRACKET = 284,
-     LBRACE = 285,
-     RBRACE = 286,
-     OPENCOMMENT = 287,
-     CLOSECOMMENT = 288
+     ASSIGN = 268,
+     EQ = 269,
+     LT = 270,
+     GT = 271,
+     PLUS = 272,
+     MINUS = 273,
+     TIMES = 274,
+     OVER = 275,
+     LPAREN = 276,
+     RPAREN = 277,
+     SEMI = 278,
+     ERROR = 279
    };
 #endif
+/* Tokens.  */
+#define IF 258
+#define THEN 259
+#define ELSE 260
+#define END 261
+#define REPEAT 262
+#define UNTIL 263
+#define READ 264
+#define WRITE 265
+#define ID 266
+#define NUM 267
+#define ASSIGN 268
+#define EQ 269
+#define LT 270
+#define GT 271
+#define PLUS 272
+#define MINUS 273
+#define TIMES 274
+#define OVER 275
+#define LPAREN 276
+#define RPAREN 277
+#define SEMI 278
+#define ERROR 279
+
 
 
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef union YYSTYPE
-{
-
-/* Line 1676 of yacc.c  */
-#line 35 "src/cminus.y"
-
-    astTreeNode * node;
-    char * str;
-    int op;
-
-
-
-/* Line 1676 of yacc.c  */
-#line 93 "src/y.tab.h"
-} YYSTYPE;
+typedef int YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1

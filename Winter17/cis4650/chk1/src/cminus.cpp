@@ -1,7 +1,7 @@
 /* cminus.cpp                                   */
 /* main file for the cminus compiler            */
 /* Created by Jeffrey-David Kapp; 0832671       */
-/* 1 March 2017 - Last modified 1/3/2017        */
+/* 1 March 2017 - Last modified 6/3/2017        */
 
 #include "cminus.h"
 #include "y.tab.h"
@@ -13,11 +13,16 @@ int lineno = 0;
 
 int main( int argc, char* argv[] ) {
     astTreeNode * outTree;
+    bool displayTree = false;
 
     if ( argc < 2 ) {
         cerr << "ERROR: Filename required\n";
         cerr << "Usage: cm <filename> [-a]\n";
         exit(1);
+    }
+
+    if( argc == 3 && !strcmp(argv[2],"-a") ) {
+        displayTree = true;
     }
 
     sourceFile = fopen(argv[1], "r");
@@ -30,8 +35,11 @@ int main( int argc, char* argv[] ) {
     outputFile = stdout;
 
     outTree = parse();
-    fprintf(outputFile, "\n\nAbstract Syntax Tree:\n" );
-    printTree(outTree);
+
+    if(displayTree) {
+        fprintf(outputFile, "\n\nAbstract Syntax Tree:\n" );
+        printTree(outTree);
+    }
 
     return 1;
 }

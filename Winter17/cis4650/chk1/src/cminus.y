@@ -1,7 +1,7 @@
 /* cminus.y                                     */
 /* Flex specification of a cminus grammar       */
 /* Created by Jeffrey-David Kapp; 0832671       */
-/* 1 March 2017 - Last modified 1/3/2017        */
+/* 1 March 2017 - Last modified 6/3/2017        */
 
 %{
 #define YYPARSER
@@ -68,7 +68,9 @@ program             : declaration_list
                     ;
 
 declaration_list    : declaration_list declaration
-                        {
+                        { //placing siblings in their linked list
+                          //from tiny_c
+                          //this is used several times below as well
                             astTreeNode * t = $1;
                             if ( t != NULL ) {
                                 while( t->sibling != NULL ) {
@@ -84,7 +86,7 @@ declaration_list    : declaration_list declaration
                     ;
 
 declaration         : var_declaration { $$ = $1; }
-                    | func_declaration { $$ = $1 ;}
+                    | func_declaration { $$ = $1;}
                     ;
 
 var_declaration     : type_specifier ID SEMICLN
@@ -143,6 +145,7 @@ param               : type_specifier ID
                             $$ = newDec(PARAM_K);
                             strcpy($$->attr.val, $2);
                         }
+                    | error { $$ = NULL; }
                     ;
 
 compound_stmt       : LBRACE local_declarations statement_list RBRACE
@@ -209,6 +212,7 @@ selection_stmt      : IF LPAREN expression RPAREN statement
                             $$->child[1] = $5;
                             $$->child[2] = $7;
                         }
+                    | error { $$ = NULL; }
                     ;
 
 iteration_stmt      : WHILE LPAREN expression RPAREN statement
@@ -232,7 +236,7 @@ return_stmt         : RETURN SEMICLN
 
 expression          : var ASSIGN expression
                         {
-                            $$ = newExp(OP_K)
+                            $$ = newExp(OP_K);
                             $$->attr.op = ASSIGN;
                             $$->child[0] = $1;
                             $$->child[1] = $3;

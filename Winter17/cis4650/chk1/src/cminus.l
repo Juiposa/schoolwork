@@ -50,8 +50,8 @@ whitespace  [ \t\r]+
 "/*"            { return OPENCOMMENT;   }
 "*/"            { return CLOSECOMMENT;  }
 
-{number}        { yylval.str = yytext; return NUM;  }
-{identifier}    { yylval.str = yytext; return ID;   }
+{number}        { yylval.str = strdup(yytext); return NUM;  }
+{identifier}    { yylval.str = strdup(yytext); return ID;   }
 
 {newline}       { lineno++;             }
 {whitespace}    {/*NOOP*/               }
@@ -70,7 +70,9 @@ int getToken() {
     }
     curToken = yylex();
     tokenString = yytext;
+    /*
     fprintf(outputFile, "Line: %d ", lineno );
     printToken( curToken, tokenString );
+    */
     return curToken;
 }
