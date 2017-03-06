@@ -1,6 +1,6 @@
 CC = g++
 FLEX = flex
-YACC = yacc
+YACC = bison
 
 CFLAGS = -Iinclude -g
 

@@ -72,44 +72,25 @@
      CLOSECOMMENT = 288
    };
 #endif
-/* Tokens.  */
-#define ENDFILE 258
-#define ERROR 259
-#define ELSE 260
-#define IF 261
-#define INT 262
-#define RETURN 263
-#define VOID 264
-#define WHILE 265
-#define ID 266
-#define NUM 267
-#define PLUS 268
-#define MINUS 269
-#define MULTI 270
-#define DIVIDE 271
-#define LT 272
-#define GT 273
-#define LE 274
-#define GE 275
-#define EQ 276
-#define NE 277
-#define ASSIGN 278
-#define SEMICLN 279
-#define COMMA 280
-#define LPAREN 281
-#define RPAREN 282
-#define LBRACKET 283
-#define RBRACKET 284
-#define LBRACE 285
-#define RBRACE 286
-#define OPENCOMMENT 287
-#define CLOSECOMMENT 288
-
 
 
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef int YYSTYPE;
+typedef union YYSTYPE
+{
+
+/* Line 1676 of yacc.c  */
+#line 35 "src/cminus.y"
+
+    astTreeNode * node;
+    char * str;
+    int op;
+
+
+
+/* Line 1676 of yacc.c  */
+#line 93 "src/y.tab.h"
+} YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1

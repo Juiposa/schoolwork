@@ -917,12 +917,12 @@ YY_RULE_SETUP
 case 28:
 YY_RULE_SETUP
 #line 53 "src/cminus.l"
-{ return NUM;           }
+{ yylval.str = yytext; return NUM;  }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
 #line 54 "src/cminus.l"
-{ return ID;            }
+{ yylval.str = yytext; return ID;   }
 	YY_BREAK
 case 30:
 /* rule 30 can match eol */

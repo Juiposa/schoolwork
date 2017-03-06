@@ -50,8 +50,8 @@ whitespace  [ \t\r]+
 "/*"            { return OPENCOMMENT;   }
 "*/"            { return CLOSECOMMENT;  }
 
-{number}        { return NUM;           }
-{identifier}    { return ID;            }
+{number}        { yylval.str = yytext; return NUM;  }
+{identifier}    { yylval.str = yytext; return ID;   }
 
 {newline}       { lineno++;             }
 {whitespace}    {/*NOOP*/               }
