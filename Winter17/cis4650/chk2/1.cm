@@ -1,0 +1,14 @@
+int main ( void )
+{
+    int i;
+    int j;
+    i = 0;
+    j = 0;
+    if ( i < 6 ) {
+        i = 6;
+    }
+    while( j < 6 ) {
+        j = j + 1;
+    }
+    return i;
+}

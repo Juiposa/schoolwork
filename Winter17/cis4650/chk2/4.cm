@@ -1,0 +1,18 @@
+int main ( int argc, void argv[] )
+{
+    int k;
+    int l;
+    int j;
+    int i [5] ;
+    i = 0;
+    j = 0;
+    while( j < 5 ) {
+        j = j + 1;
+        i[j] = 1337;
+        i [ 3 ] = 1337;
+    }
+    while( j < 6 ) {
+        j = j + 1;
+    }
+    return i;
+}
