@@ -1,18 +1,31 @@
+/*this is a comment*/
+
 int main ( int argc, void argv[] )
 {
     int k;
     int l;
-    int j;
-    int i [5] ;
+    int j [3];
+    int i [5];
+    void xyz;
     i = 0;
     j = 0;
+    abc = 0;
+    if( i == 0 ) {
+        j = 1;
+    } else {
+        return i + xyz + 0;
+    }
     while( j < 5 ) {
         j = j + 1;
-        i[j] = 1337;
-        i [ 3 ] = 1337;
+        i [3] = 1337;
     }
-    while( j < 6 ) {
-        j = j + 1;
+    while( xyz < 5 ) {
+        do = something;
+    }
+    if( xyz < 5 ) {
+        do = something;
+    } else {
+        return xyz;
     }
     return i;
 }

@@ -10,8 +10,11 @@
 
 
 static astTreeNode * returnTree; //tree to be built and returned by the parser
+bool parseSuccess = true; //will block the return of the ast if there were syntax errors
+char * activeFunction = NULL; //reference to the function whose scope we're in
+int currScope = 0; //current scope (symbol table)
 extern int yychar;
-extern unordered_map<char *, astTreeNode*> symbolTable;
+extern unordered_map<string, astTreeNode*> symbolTable;
 extern int yyparse(void);
 
 static int yylex(void) {
@@ -24,6 +27,7 @@ astTreeNode * parse() {
 }
 
 void yyerror(string message) {
+    parseSuccess = false;
     fprintf(outputFile, "ERROR: at line %d: %s ", lineno, message.c_str() );
     fprintf(outputFile, "on token: ");
     printToken(yychar, tokenString);
@@ -66,7 +70,12 @@ void yyerror(string message) {
 
 
 program             : declaration_list
-                        { returnTree = $1; }
+                        {
+                            if (parseSuccess)
+                                returnTree = $1;
+                            else
+                                returnTree = NULL;
+                        }
                     ;
 
 declaration_list    : declaration_list declaration
@@ -99,6 +108,7 @@ var_declaration     : type_specifier ID SEMICLN
                             $$ = newNode;*/
                             $$ = newDec(VAR_K);
                             strcpy($$->val, $2);
+                            $$->func = false;
                             $$->array = false;
                             switch($1) {
                                 case INT:
@@ -119,6 +129,7 @@ var_declaration     : type_specifier ID SEMICLN
                         {
                             $$ = newDec(VAR_K);
                             strcpy($$->val, $2);
+                            $$->func = false;
                             $$->array = true;
                             $$->size = atoi($4);
                             switch($1) {
@@ -154,18 +165,23 @@ func_declaration    : type_specifier ID LPAREN params RPAREN compound_stmt
                             strcpy( $$->val, $2 );
                             $$->child[0] = $4;
                             $$->child[1] = $6;
+                            $$->func = true;
                             switch($1) {
                                 case INT:
                                     $$->type = INT_T;
+                                    symbolTable.insert({ $$->val, $$ });
                                     break;
                                 case VOID:
                                     $$->type = VOID_T;
+                                    symbolTable.insert({ $$->val, $$ });
                                     break;
                                 default:
                                     fprintf(outputFile, "ERROR: at line %d: Function has invalid return type\n", lineno);
                                     $$ = NULL;
                                     break;
                             }
+                            strcpy(activeFunction, $$->val);
+                            activeFunction = NULL;
                         }
                     ;
 
@@ -280,11 +296,18 @@ iteration_stmt      : WHILE LPAREN expression RPAREN statement
 return_stmt         : RETURN SEMICLN
                         {
                             $$ = newStmt(RETURN_K);
+                            if (activeFunction == NULL)
+                                activeFunction = (char*)malloc(sizeof(char)*50);
+                            $$->function = activeFunction;
+
                         }
                     | RETURN expression SEMICLN
                         {
                             $$ = newStmt(RETURN_K);
+                            if (activeFunction == NULL)
+                                activeFunction = (char*)malloc(sizeof(char)*50);
                             $$->child[0] = $2;
+                            $$->function = activeFunction;
                         }
                     ;
 
@@ -364,6 +387,7 @@ factor              : LPAREN expression RPAREN { $$ = $2; }
                     | NUM
                         {
                             $$ = newExp(CONST_K);
+                            $$->type = INT_T;
                             strcpy($$->val, $1);
                         }
                     ;

@@ -80,7 +80,7 @@ typedef union YYSTYPE
 {
 
 /* Line 1676 of yacc.c  */
-#line 35 "src/cminus.y"
+#line 39 "src/cminus.y"
 
     astTreeNode * node;
     char * str;

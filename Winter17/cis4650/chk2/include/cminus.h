@@ -13,6 +13,7 @@
 #include <cctype>
 #include <iostream>
 #include <string>
+#include <stdexcept>
 #include <unordered_map>
 
 using namespace std;
@@ -46,12 +47,14 @@ typedef struct astTreeNode {
 
     union { StmtKind statement; ExpKind expression; DecKind declaration; } kind;
 
-    //add and integer value storage to this for future checkpoints
-
     int op;
     char * val;
     VarType type;
     int size;
+    char * function;
+
+    //declaration flags
+    bool func;
     bool array;
 
 } astTreeNode;
@@ -63,16 +66,6 @@ astTreeNode * newStmt(StmtKind stmt);
 astTreeNode * newExp(ExpKind expr);
 
 astTreeNode * newDec(DecKind dec);
-
-//hash map nodes
-typedef struct varNode {
-    VarType type;
-    char * name;
-    int size;
-} varNode;
-
-//Hash map functions
-varNode * newVariable( char * name, VarType type, int size);
 
 //Utility functions
 //returns the next token in source file
@@ -86,6 +79,10 @@ void printToken( int tokenType, string tokenStr );
 
 //prints the AST
 void printTree( astTreeNode * tree );
+
+//semantic checker
+bool typeChecking( astTreeNode * tree );
+VarType checkOperation( astTreeNode * tree );
 
 
 #endif

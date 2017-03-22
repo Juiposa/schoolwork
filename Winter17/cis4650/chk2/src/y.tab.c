@@ -76,8 +76,11 @@
 
 
 static astTreeNode * returnTree; //tree to be built and returned by the parser
+bool parseSuccess = true; //will block the return of the ast if there were syntax errors
+char * activeFunction = NULL; //reference to the function whose scope we're in
+int currScope = 0; //current scope (symbol table)
 extern int yychar;
-extern unordered_map<char *, astTreeNode*> symbolTable;
+extern unordered_map<string, astTreeNode*> symbolTable;
 extern int yyparse(void);
 
 static int yylex(void) {
@@ -90,6 +93,7 @@ astTreeNode * parse() {
 }
 
 void yyerror(string message) {
+    parseSuccess = false;
     fprintf(outputFile, "ERROR: at line %d: %s ", lineno, message.c_str() );
     fprintf(outputFile, "on token: ");
     printToken(yychar, tokenString);
@@ -99,7 +103,7 @@ void yyerror(string message) {
 
 
 /* Line 189 of yacc.c  */
-#line 103 "src/y.tab.c"
+#line 107 "src/y.tab.c"
 
 /* Enabling traces.  */
 #ifndef YYDEBUG
@@ -167,7 +171,7 @@ typedef union YYSTYPE
 {
 
 /* Line 214 of yacc.c  */
-#line 35 "src/cminus.y"
+#line 39 "src/cminus.y"
 
     astTreeNode * node;
     char * str;
@@ -177,7 +181,7 @@ typedef union YYSTYPE
 
 
 /* Line 214 of yacc.c  */
-#line 181 "src/y.tab.c"
+#line 185 "src/y.tab.c"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -189,7 +193,7 @@ typedef union YYSTYPE
 
 
 /* Line 264 of yacc.c  */
-#line 193 "src/y.tab.c"
+#line 197 "src/y.tab.c"
 
 #ifdef short
 # undef short
@@ -498,13 +502,13 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,    68,    68,    72,    87,    90,    91,    94,   118,   139,
-     146,   147,   148,   151,   172,   173,   176,   189,   192,   197,
-     202,   205,   213,   226,   229,   242,   245,   246,   247,   248,
-     249,   252,   253,   256,   262,   269,   272,   280,   284,   291,
-     298,   299,   302,   307,   315,   322,   325,   326,   327,   328,
-     329,   330,   333,   340,   343,   344,   347,   354,   357,   358,
-     361,   362,   363,   364,   371,   379,   380,   383,   389
+       0,    72,    72,    81,    96,    99,   100,   103,   128,   150,
+     157,   158,   159,   162,   188,   189,   192,   205,   208,   213,
+     218,   221,   229,   242,   245,   258,   261,   262,   263,   264,
+     265,   268,   269,   272,   278,   285,   288,   296,   304,   314,
+     321,   322,   325,   330,   338,   345,   348,   349,   350,   351,
+     352,   353,   356,   363,   366,   367,   370,   377,   380,   381,
+     384,   385,   386,   387,   395,   403,   404,   407,   413
 };
 #endif
 
@@ -1484,14 +1488,19 @@ yyreduce:
         case 2:
 
 /* Line 1455 of yacc.c  */
-#line 69 "src/cminus.y"
-    { returnTree = (yyvsp[(1) - (1)].node); ;}
+#line 73 "src/cminus.y"
+    {
+                            if (parseSuccess)
+                                returnTree = (yyvsp[(1) - (1)].node);
+                            else
+                                returnTree = NULL;
+                        ;}
     break;
 
   case 3:
 
 /* Line 1455 of yacc.c  */
-#line 73 "src/cminus.y"
+#line 82 "src/cminus.y"
     { //placing siblings in their linked list
                           //from tiny_c
                           //this is used several times below as well
@@ -1511,28 +1520,28 @@ yyreduce:
   case 4:
 
 /* Line 1455 of yacc.c  */
-#line 87 "src/cminus.y"
+#line 96 "src/cminus.y"
     { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 5:
 
 /* Line 1455 of yacc.c  */
-#line 90 "src/cminus.y"
+#line 99 "src/cminus.y"
     { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 6:
 
 /* Line 1455 of yacc.c  */
-#line 91 "src/cminus.y"
+#line 100 "src/cminus.y"
     { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 7:
 
 /* Line 1455 of yacc.c  */
-#line 95 "src/cminus.y"
+#line 104 "src/cminus.y"
     {
                             /*astTreeNode * newNode = newDec(VAR_K);
                             strcpy(newNode->val, $2);
@@ -1540,6 +1549,7 @@ yyreduce:
                             $$ = newNode;*/
                             (yyval.node) = newDec(VAR_K);
                             strcpy((yyval.node)->val, (yyvsp[(2) - (3)].str));
+                            (yyval.node)->func = false;
                             (yyval.node)->array = false;
                             switch((yyvsp[(1) - (3)].varType)) {
                                 case INT:
@@ -1561,10 +1571,11 @@ yyreduce:
   case 8:
 
 /* Line 1455 of yacc.c  */
-#line 119 "src/cminus.y"
+#line 129 "src/cminus.y"
     {
                             (yyval.node) = newDec(VAR_K);
                             strcpy((yyval.node)->val, (yyvsp[(2) - (6)].str));
+                            (yyval.node)->func = false;
                             (yyval.node)->array = true;
                             (yyval.node)->size = atoi((yyvsp[(4) - (6)].str));
                             switch((yyvsp[(1) - (6)].varType)) {
@@ -1587,7 +1598,7 @@ yyreduce:
   case 9:
 
 /* Line 1455 of yacc.c  */
-#line 140 "src/cminus.y"
+#line 151 "src/cminus.y"
     {
                             fprintf(outputFile, "ERROR: at line %d: Unexpected tokens during variable declaration\n", lineno);
                             (yyval.node) = NULL;
@@ -1597,66 +1608,71 @@ yyreduce:
   case 10:
 
 /* Line 1455 of yacc.c  */
-#line 146 "src/cminus.y"
+#line 157 "src/cminus.y"
     { (yyval.varType) = INT; ;}
     break;
 
   case 11:
 
 /* Line 1455 of yacc.c  */
-#line 147 "src/cminus.y"
+#line 158 "src/cminus.y"
     { (yyval.varType) = VOID; ;}
     break;
 
   case 12:
 
 /* Line 1455 of yacc.c  */
-#line 148 "src/cminus.y"
+#line 159 "src/cminus.y"
     { (yyval.varType) = 999; ;}
     break;
 
   case 13:
 
 /* Line 1455 of yacc.c  */
-#line 152 "src/cminus.y"
+#line 163 "src/cminus.y"
     {
                             (yyval.node) = newDec(FUN_K);
                             strcpy( (yyval.node)->val, (yyvsp[(2) - (6)].str) );
                             (yyval.node)->child[0] = (yyvsp[(4) - (6)].node);
                             (yyval.node)->child[1] = (yyvsp[(6) - (6)].node);
+                            (yyval.node)->func = true;
                             switch((yyvsp[(1) - (6)].varType)) {
                                 case INT:
                                     (yyval.node)->type = INT_T;
+                                    symbolTable.insert({ (yyval.node)->val, (yyval.node) });
                                     break;
                                 case VOID:
                                     (yyval.node)->type = VOID_T;
+                                    symbolTable.insert({ (yyval.node)->val, (yyval.node) });
                                     break;
                                 default:
                                     fprintf(outputFile, "ERROR: at line %d: Function has invalid return type\n", lineno);
                                     (yyval.node) = NULL;
                                     break;
                             }
+                            strcpy(activeFunction, (yyval.node)->val);
+                            activeFunction = NULL;
                         ;}
     break;
 
   case 14:
 
 /* Line 1455 of yacc.c  */
-#line 172 "src/cminus.y"
+#line 188 "src/cminus.y"
     { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 15:
 
 /* Line 1455 of yacc.c  */
-#line 173 "src/cminus.y"
+#line 189 "src/cminus.y"
     { (yyval.node) = NULL; ;}
     break;
 
   case 16:
 
 /* Line 1455 of yacc.c  */
-#line 177 "src/cminus.y"
+#line 193 "src/cminus.y"
     {
                             astTreeNode * t = (yyvsp[(1) - (3)].node);
                             if ( t != NULL ) {
@@ -1674,14 +1690,14 @@ yyreduce:
   case 17:
 
 /* Line 1455 of yacc.c  */
-#line 189 "src/cminus.y"
+#line 205 "src/cminus.y"
     { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 18:
 
 /* Line 1455 of yacc.c  */
-#line 193 "src/cminus.y"
+#line 209 "src/cminus.y"
     {
                             (yyval.node) = newDec(PARAM_K);
                             strcpy((yyval.node)->val, (yyvsp[(2) - (2)].str));
@@ -1691,7 +1707,7 @@ yyreduce:
   case 19:
 
 /* Line 1455 of yacc.c  */
-#line 198 "src/cminus.y"
+#line 214 "src/cminus.y"
     {
                             (yyval.node) = newDec(PARAM_K);
                             strcpy((yyval.node)->val, (yyvsp[(2) - (4)].str));
@@ -1701,14 +1717,14 @@ yyreduce:
   case 20:
 
 /* Line 1455 of yacc.c  */
-#line 202 "src/cminus.y"
+#line 218 "src/cminus.y"
     { (yyval.node) = NULL; ;}
     break;
 
   case 21:
 
 /* Line 1455 of yacc.c  */
-#line 206 "src/cminus.y"
+#line 222 "src/cminus.y"
     {
                             (yyval.node) = newStmt(CMPD_K);
                             (yyval.node)->child[0] = (yyvsp[(2) - (4)].node);
@@ -1717,31 +1733,6 @@ yyreduce:
     break;
 
   case 22:
-
-/* Line 1455 of yacc.c  */
-#line 214 "src/cminus.y"
-    {
-                            astTreeNode * t = (yyvsp[(1) - (2)].node);
-                            if ( t != NULL ) {
-                                while( t->sibling != NULL ) {
-                                    t = t->sibling;
-                                }
-                                t->sibling = (yyvsp[(2) - (2)].node);
-                                (yyval.node) = (yyvsp[(1) - (2)].node);
-                            } else {
-                                (yyval.node) = (yyvsp[(2) - (2)].node);
-                            }
-                        ;}
-    break;
-
-  case 23:
-
-/* Line 1455 of yacc.c  */
-#line 226 "src/cminus.y"
-    { (yyval.node) = NULL; ;}
-    break;
-
-  case 24:
 
 /* Line 1455 of yacc.c  */
 #line 230 "src/cminus.y"
@@ -1759,66 +1750,91 @@ yyreduce:
                         ;}
     break;
 
-  case 25:
+  case 23:
 
 /* Line 1455 of yacc.c  */
 #line 242 "src/cminus.y"
     { (yyval.node) = NULL; ;}
     break;
 
+  case 24:
+
+/* Line 1455 of yacc.c  */
+#line 246 "src/cminus.y"
+    {
+                            astTreeNode * t = (yyvsp[(1) - (2)].node);
+                            if ( t != NULL ) {
+                                while( t->sibling != NULL ) {
+                                    t = t->sibling;
+                                }
+                                t->sibling = (yyvsp[(2) - (2)].node);
+                                (yyval.node) = (yyvsp[(1) - (2)].node);
+                            } else {
+                                (yyval.node) = (yyvsp[(2) - (2)].node);
+                            }
+                        ;}
+    break;
+
+  case 25:
+
+/* Line 1455 of yacc.c  */
+#line 258 "src/cminus.y"
+    { (yyval.node) = NULL; ;}
+    break;
+
   case 26:
 
 /* Line 1455 of yacc.c  */
-#line 245 "src/cminus.y"
+#line 261 "src/cminus.y"
     { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 27:
 
 /* Line 1455 of yacc.c  */
-#line 246 "src/cminus.y"
+#line 262 "src/cminus.y"
     { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 28:
 
 /* Line 1455 of yacc.c  */
-#line 247 "src/cminus.y"
+#line 263 "src/cminus.y"
     { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 29:
 
 /* Line 1455 of yacc.c  */
-#line 248 "src/cminus.y"
+#line 264 "src/cminus.y"
     { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 30:
 
 /* Line 1455 of yacc.c  */
-#line 249 "src/cminus.y"
+#line 265 "src/cminus.y"
     { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 31:
 
 /* Line 1455 of yacc.c  */
-#line 252 "src/cminus.y"
+#line 268 "src/cminus.y"
     { (yyval.node) = (yyvsp[(1) - (2)].node); ;}
     break;
 
   case 32:
 
 /* Line 1455 of yacc.c  */
-#line 253 "src/cminus.y"
+#line 269 "src/cminus.y"
     { (yyval.node) = NULL;;}
     break;
 
   case 33:
 
 /* Line 1455 of yacc.c  */
-#line 257 "src/cminus.y"
+#line 273 "src/cminus.y"
     {
                             (yyval.node) = newStmt(IF_K);
                             (yyval.node)->child[0] = (yyvsp[(3) - (5)].node);
@@ -1829,7 +1845,7 @@ yyreduce:
   case 34:
 
 /* Line 1455 of yacc.c  */
-#line 263 "src/cminus.y"
+#line 279 "src/cminus.y"
     {
                             (yyval.node) = newStmt(IF_K);
                             (yyval.node)->child[0] = (yyvsp[(3) - (7)].node);
@@ -1841,14 +1857,14 @@ yyreduce:
   case 35:
 
 /* Line 1455 of yacc.c  */
-#line 269 "src/cminus.y"
+#line 285 "src/cminus.y"
     { (yyval.node) = NULL; ;}
     break;
 
   case 36:
 
 /* Line 1455 of yacc.c  */
-#line 273 "src/cminus.y"
+#line 289 "src/cminus.y"
     {
                             (yyval.node) =  newStmt(WHILE_K);
                             (yyval.node)->child[0] = (yyvsp[(3) - (5)].node);
@@ -1859,26 +1875,33 @@ yyreduce:
   case 37:
 
 /* Line 1455 of yacc.c  */
-#line 281 "src/cminus.y"
+#line 297 "src/cminus.y"
     {
                             (yyval.node) = newStmt(RETURN_K);
+                            if (activeFunction == NULL)
+                                activeFunction = (char*)malloc(sizeof(char)*50);
+                            (yyval.node)->function = activeFunction;
+
                         ;}
     break;
 
   case 38:
 
 /* Line 1455 of yacc.c  */
-#line 285 "src/cminus.y"
+#line 305 "src/cminus.y"
     {
                             (yyval.node) = newStmt(RETURN_K);
+                            if (activeFunction == NULL)
+                                activeFunction = (char*)malloc(sizeof(char)*50);
                             (yyval.node)->child[0] = (yyvsp[(2) - (3)].node);
+                            (yyval.node)->function = activeFunction;
                         ;}
     break;
 
   case 39:
 
 /* Line 1455 of yacc.c  */
-#line 292 "src/cminus.y"
+#line 315 "src/cminus.y"
     {
                             (yyval.node) = newExp(OP_K);
                             (yyval.node)->op = ASSIGN;
@@ -1890,21 +1913,21 @@ yyreduce:
   case 40:
 
 /* Line 1455 of yacc.c  */
-#line 298 "src/cminus.y"
+#line 321 "src/cminus.y"
     { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 41:
 
 /* Line 1455 of yacc.c  */
-#line 299 "src/cminus.y"
+#line 322 "src/cminus.y"
     { (yyval.node) = NULL; ;}
     break;
 
   case 42:
 
 /* Line 1455 of yacc.c  */
-#line 303 "src/cminus.y"
+#line 326 "src/cminus.y"
     {
                             (yyval.node) = newExp(ID_K);
                             strcpy((yyval.node)->val, (yyvsp[(1) - (1)].str));
@@ -1914,7 +1937,7 @@ yyreduce:
   case 43:
 
 /* Line 1455 of yacc.c  */
-#line 308 "src/cminus.y"
+#line 331 "src/cminus.y"
     {
                             (yyval.node) = newExp(ID_K);
                             strcpy((yyval.node)->val, (yyvsp[(1) - (4)].str));
@@ -1925,7 +1948,7 @@ yyreduce:
   case 44:
 
 /* Line 1455 of yacc.c  */
-#line 316 "src/cminus.y"
+#line 339 "src/cminus.y"
     {
                             (yyval.node) = newExp(OP_K);
                             (yyval.node)->op = (yyvsp[(2) - (3)].op);
@@ -1937,56 +1960,56 @@ yyreduce:
   case 45:
 
 /* Line 1455 of yacc.c  */
-#line 322 "src/cminus.y"
+#line 345 "src/cminus.y"
     { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 46:
 
 /* Line 1455 of yacc.c  */
-#line 325 "src/cminus.y"
+#line 348 "src/cminus.y"
     { (yyval.op) = LT; ;}
     break;
 
   case 47:
 
 /* Line 1455 of yacc.c  */
-#line 326 "src/cminus.y"
+#line 349 "src/cminus.y"
     { (yyval.op) = GT; ;}
     break;
 
   case 48:
 
 /* Line 1455 of yacc.c  */
-#line 327 "src/cminus.y"
+#line 350 "src/cminus.y"
     { (yyval.op) = LE; ;}
     break;
 
   case 49:
 
 /* Line 1455 of yacc.c  */
-#line 328 "src/cminus.y"
+#line 351 "src/cminus.y"
     { (yyval.op) = GE; ;}
     break;
 
   case 50:
 
 /* Line 1455 of yacc.c  */
-#line 329 "src/cminus.y"
+#line 352 "src/cminus.y"
     { (yyval.op) = EQ; ;}
     break;
 
   case 51:
 
 /* Line 1455 of yacc.c  */
-#line 330 "src/cminus.y"
+#line 353 "src/cminus.y"
     { (yyval.op) = NE; ;}
     break;
 
   case 52:
 
 /* Line 1455 of yacc.c  */
-#line 334 "src/cminus.y"
+#line 357 "src/cminus.y"
     {
                             (yyval.node) = newExp(OP_K);
                             (yyval.node)->op = (yyvsp[(2) - (3)].op);
@@ -1998,28 +2021,28 @@ yyreduce:
   case 53:
 
 /* Line 1455 of yacc.c  */
-#line 340 "src/cminus.y"
+#line 363 "src/cminus.y"
     { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 54:
 
 /* Line 1455 of yacc.c  */
-#line 343 "src/cminus.y"
+#line 366 "src/cminus.y"
     { (yyval.op) = PLUS; ;}
     break;
 
   case 55:
 
 /* Line 1455 of yacc.c  */
-#line 344 "src/cminus.y"
+#line 367 "src/cminus.y"
     { (yyval.op) = MINUS; ;}
     break;
 
   case 56:
 
 /* Line 1455 of yacc.c  */
-#line 348 "src/cminus.y"
+#line 371 "src/cminus.y"
     {
                             (yyval.node) = newExp(OP_K);
                             (yyval.node)->op = (yyvsp[(2) - (3)].op);
@@ -2031,51 +2054,52 @@ yyreduce:
   case 57:
 
 /* Line 1455 of yacc.c  */
-#line 354 "src/cminus.y"
+#line 377 "src/cminus.y"
     { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 58:
 
 /* Line 1455 of yacc.c  */
-#line 357 "src/cminus.y"
+#line 380 "src/cminus.y"
     { (yyval.op) = MULTI; ;}
     break;
 
   case 59:
 
 /* Line 1455 of yacc.c  */
-#line 358 "src/cminus.y"
+#line 381 "src/cminus.y"
     { (yyval.op) = DIVIDE; ;}
     break;
 
   case 60:
 
 /* Line 1455 of yacc.c  */
-#line 361 "src/cminus.y"
+#line 384 "src/cminus.y"
     { (yyval.node) = (yyvsp[(2) - (3)].node); ;}
     break;
 
   case 61:
 
 /* Line 1455 of yacc.c  */
-#line 362 "src/cminus.y"
+#line 385 "src/cminus.y"
     { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 62:
 
 /* Line 1455 of yacc.c  */
-#line 363 "src/cminus.y"
+#line 386 "src/cminus.y"
     { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 63:
 
 /* Line 1455 of yacc.c  */
-#line 365 "src/cminus.y"
+#line 388 "src/cminus.y"
     {
                             (yyval.node) = newExp(CONST_K);
+                            (yyval.node)->type = INT_T;
                             strcpy((yyval.node)->val, (yyvsp[(1) - (1)].str));
                         ;}
     break;
@@ -2083,7 +2107,7 @@ yyreduce:
   case 64:
 
 /* Line 1455 of yacc.c  */
-#line 372 "src/cminus.y"
+#line 396 "src/cminus.y"
     {
                             (yyval.node) = newExp(CALL_K);
                             strcpy((yyval.node)->val, (yyvsp[(1) - (4)].str));
@@ -2094,21 +2118,21 @@ yyreduce:
   case 65:
 
 /* Line 1455 of yacc.c  */
-#line 379 "src/cminus.y"
+#line 403 "src/cminus.y"
     { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
   case 66:
 
 /* Line 1455 of yacc.c  */
-#line 380 "src/cminus.y"
+#line 404 "src/cminus.y"
     { (yyval.node) = NULL; ;}
     break;
 
   case 67:
 
 /* Line 1455 of yacc.c  */
-#line 384 "src/cminus.y"
+#line 408 "src/cminus.y"
     {
                             (yyval.node) = newExp(ARGS_K);
                             (yyval.node)->child[0] = (yyvsp[(1) - (3)].node);
@@ -2119,14 +2143,14 @@ yyreduce:
   case 68:
 
 /* Line 1455 of yacc.c  */
-#line 389 "src/cminus.y"
+#line 413 "src/cminus.y"
     { (yyval.node) = (yyvsp[(1) - (1)].node); ;}
     break;
 
 
 
 /* Line 1455 of yacc.c  */
-#line 2130 "src/y.tab.c"
+#line 2154 "src/y.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);

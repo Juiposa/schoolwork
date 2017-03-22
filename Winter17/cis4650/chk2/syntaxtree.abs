@@ -1,0 +1,71 @@
+
+
+Abstract Syntax Tree:
+    Function declaration: main
+        Param dec: argc
+        Param dec: argv[]
+        Compount Statement
+            Variable declaration: k (INTEGER)
+            Variable declaration: l (INTEGER)
+            Variable declaration: j ARRAY of Size 3 (INTEGER)
+            Variable declaration: i ARRAY of Size 5 (INTEGER)
+            Variable declaration: xyz (VOID)
+            Operation: =
+                Id: i
+                Const: 0
+            Operation: =
+                Id: j
+                Const: 0
+            Operation: =
+                Id: abc
+                Const: 0
+            If
+                Operation: ==
+                    Id: i
+                    Const: 0
+                Compount Statement
+                    Operation: =
+                        Id: j
+                        Const: 1
+                Compount Statement
+                    Return
+                        Operation: +
+                            Operation: +
+                                Id: i
+                                Id: xyz
+                            Const: 0
+            While
+                Operation: <
+                    Id: j
+                    Const: 5
+                Compount Statement
+                    Operation: =
+                        Id: j
+                        Operation: +
+                            Id: j
+                            Const: 1
+                    Operation: =
+                        Id: i
+                            Const: 3
+                        Const: 1337
+            While
+                Operation: <
+                    Id: xyz
+                    Const: 5
+                Compount Statement
+                    Operation: =
+                        Id: do
+                        Id: something
+            If
+                Operation: <
+                    Id: xyz
+                    Const: 5
+                Compount Statement
+                    Operation: =
+                        Id: do
+                        Id: something
+                Compount Statement
+                    Return
+                        Id: xyz
+            Return
+                Id: i

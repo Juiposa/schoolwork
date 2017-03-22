@@ -10,20 +10,25 @@ extern string tokenString;
 FILE * sourceFile;
 FILE * outputFile;
 int lineno = 0;
-unordered_map<char *, astTreeNode*> symbolTable;
+unordered_map<string, astTreeNode*> symbolTable;
 
 int main( int argc, char* argv[] ) {
     astTreeNode * outTree;
     bool displayTree = false;
+    bool displaySymbolTable = false;
 
     if ( argc < 2 ) {
         cerr << "ERROR: Filename required\n";
-        cerr << "Usage: cm <filename> [-a]\n";
+        cerr << "Usage: cm <filename> [-a -s]\n";
         exit(1);
     }
 
-    if( argc == 3 && !strcmp(argv[2],"-a") ) {
-        displayTree = true;
+    for( int i = 2; i < argc; i++ ) {
+        if( strcmp( argv[i], "-a" ) == 0 ) {
+            displayTree = true;
+        } else if (  strcmp( argv[i], "-s" ) == 0 ) {
+            displaySymbolTable = true;
+        }
     }
 
     sourceFile = fopen(argv[1], "r");
@@ -33,24 +38,29 @@ int main( int argc, char* argv[] ) {
         exit(1);
     }
 
-    outputFile = stdout;
 
+    outputFile = fopen("syntaxtree.abs", "w");
     outTree = parse();
-
-    if(displayTree) {
+    if(displayTree) { //AST printingcat syn
         fprintf(outputFile, "\n\nAbstract Syntax Tree:\n" );
         printTree(outTree);
     }
+    fclose(outputFile);
 
-    if(true) {
+    outputFile = fopen("symboltable.sym", "w");
+    if(displaySymbolTable) { //Hash Map printing
         for( int i = 0; i < symbolTable.bucket_count(); ++i ) {
-            std::cout << "bucket #" << i << " contains:";
+            fprintf(outputFile, "Bucket #%d conatins:", i );
             for ( auto local_it = symbolTable.begin(i); local_it!= symbolTable.end(i); ++local_it )
-                std::cout << " " << local_it->first << ":" << local_it->second;
-            std::cout << std::endl;
+                fprintf(outputFile, " %s:%d",local_it->first.c_str(), local_it->second );
+            fprintf(outputFile, "\n" );
         }
     }
 
+    if(outTree != NULL) {
+        typeChecking(outTree);
+    }
+    fclose(outputFile);
     return 1;
 }
 
@@ -154,20 +164,6 @@ astTreeNode * newDec(DecKind dec) {
 }
 //End ast fucntions
 
-//Start hash map functions
-//this is basically the constructor for what should be a class
-varNode * newVariable( char * name, VarType type, int size ) {
-    varNode * newNode = (varNode*)malloc(sizeof(varNode));
-    newNode->name = (char*)malloc(sizeof(char)*50);
-    strcpy(newNode->name, name);
-    newNode->type = type;
-    newNode->size = size;
-
-    return newNode;
-}
-
-//End hash map functions
-
 //copied directly from the tiny parser and modified to work here
 /* used by printTree to store current number of spaces to indent
  */
@@ -234,7 +230,7 @@ void printTree( astTreeNode * tree ) {
                             fprintf(outputFile, "(INTEGER)\n");
                             break;
                         case VOID_T:
-                            fprintf(outputFile, "Variable declaration: %s (VOID)\n", tree->val );
+                            fprintf(outputFile, "Variable declaration: %s ", tree->val );
                             if(tree->array) {
                                 fprintf(outputFile, "ARRAY of Size %d ", tree->size );
                             }
@@ -258,4 +254,104 @@ void printTree( astTreeNode * tree ) {
         }
     }
     UNINDENT;
+}
+
+bool typeChecking( astTreeNode * tree ) {
+    bool semanticSuccess = true;
+    astTreeNode * node;
+    for ( ; tree != NULL; tree = tree->sibling ) {
+        printSpaces();
+        if( tree->node_kind == STMT_K ) {
+            switch( tree->kind.statement ) {
+                case IF_K:
+                    if( tree->child[0]->child[0]->kind.expression != CONST_K ) {
+                        if( symbolTable.count(tree->child[0]->child[0]->val) != 0 ) {
+                            node = symbolTable.find(tree->child[0]->child[0]->val)->second;
+                        } else {
+                            node = NULL;
+                        }
+                        if( node == NULL || node->type != INT_T ) {
+                            fprintf(outputFile, "ERROR: at line %d: If condition must be an integer constant or variable\n", tree->child[0]->child[0]->pos);
+                        }
+                    }
+                    break;
+                case RETURN_K:
+                    if( tree->child[0]->kind.expression == OP_K ){
+                        break;
+                    } else {
+                        node = symbolTable.find(tree->child[0]->val)->second;
+                    }
+                    if( node->type != symbolTable.find(tree->function)->second->type ) {
+                        fprintf(outputFile, "ERROR: at line %d: Return type mismatch\n", tree->pos);
+                    }
+                    break;
+                case WHILE_K:
+                    if( tree->child[0]->child[0]->kind.expression != CONST_K ) {
+                        if( symbolTable.count(tree->child[0]->child[0]->val) != 0 ) {
+                            node = symbolTable.find(tree->child[0]->child[0]->val)->second;
+                        } else {
+                            node = NULL;
+                        }
+                        if( node == NULL || node->type != INT_T ) {
+                            fprintf(outputFile, "ERROR: at line %d: If condition must be an integer constant or variable\n", tree->child[0]->child[0]->pos);
+                        }
+                    }
+                    break;
+            }
+        } else if ( tree->node_kind == EXP_K ) {
+            switch ( tree->kind.expression ) {
+                case OP_K:
+                    if( checkOperation( tree ) == VOID_T ) {
+                        fprintf(outputFile, "ERROR: at line %d: Mismatch of data types in operation\n", tree->pos);
+                    }
+                    break;
+                case CONST_K:
+                    break;
+                case ID_K:
+                     if ( symbolTable.find(tree->val) == symbolTable.end() ) {
+                        semanticSuccess = false;
+                        fprintf(outputFile, "ERROR: at line %d: Variable %s is undeclared\n", tree->pos, tree->val);
+                     }
+                    break;
+                case CALL_K:
+                    if ( symbolTable.find(tree->val) == symbolTable.end() ) {
+                        semanticSuccess = false;
+                        fprintf(outputFile, "ERROR: at line %d: Call to undeclared function %s\n", tree->pos, tree->val);
+                    }
+                    break;
+                case ARGS_K:
+                    //not implemented
+                    break;
+            }
+        }
+        for ( int i = 0; i < MAXCHILDREN; i++ ) {
+            typeChecking(tree->child[i]);
+        }
+    }
+    return semanticSuccess;
+}
+
+VarType checkOperation( astTreeNode * tree ) {
+    VarType opType;
+    VarType returnType = INT_T;
+    astTreeNode * node;
+        //ids and consts pass thier data type back up
+        if ( tree != NULL && strlen(tree->val) > 0 && (tree->kind.expression == ID_K || tree->kind.expression == CONST_K) ) {
+            if( tree->kind.expression == ID_K && symbolTable.find(tree->val) != symbolTable.end() ) {
+                node = symbolTable.find(tree->val)->second;
+                return node->type;
+            } else if ( tree->kind.expression == CONST_K ) {
+                return INT_T;
+            } else {
+                return VOID_T;
+            }
+        }
+        for ( int i = 0; tree != NULL && i < MAXCHILDREN; i++ ) {
+            opType = checkOperation(tree->child[i]);
+            //the operations return VOID_T if there is a deliquent data type
+            if(opType != INT_T) {
+                returnType = VOID_T;
+            }
+        }
+    return returnType;
 }
