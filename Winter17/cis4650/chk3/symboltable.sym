@@ -1,0 +1,26 @@
+Bucket #0 conatins: k:8640336
+Bucket #1 conatins: xyz:8641424
+Bucket #2 conatins:
+Bucket #3 conatins:
+Bucket #4 conatins:
+Bucket #5 conatins: main:8651344
+Bucket #6 conatins:
+Bucket #7 conatins: j:8640880
+Bucket #8 conatins: i:8641168
+Bucket #9 conatins: l:8640592
+Bucket #10 conatins:
+ERROR: at line 12: Mismatch of data types in operation
+ERROR: at line 12: Variable abc is undeclared
+ERROR: at line 16: Mismatch of data types in operation
+ERROR: at line 16: Mismatch of data types in operation
+ERROR: at line 22: If condition must be an integer constant or variable
+ERROR: at line 22: Mismatch of data types in operation
+ERROR: at line 23: Mismatch of data types in operation
+ERROR: at line 23: Variable do is undeclared
+ERROR: at line 23: Variable something is undeclared
+ERROR: at line 25: If condition must be an integer constant or variable
+ERROR: at line 25: Mismatch of data types in operation
+ERROR: at line 26: Mismatch of data types in operation
+ERROR: at line 26: Variable do is undeclared
+ERROR: at line 26: Variable something is undeclared
+ERROR: at line 28: Return type mismatch
