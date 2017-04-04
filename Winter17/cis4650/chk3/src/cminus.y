@@ -1,7 +1,7 @@
 /* cminus.y                                     */
 /* Flex specification of a cminus grammar       */
 /* Created by Jeffrey-David Kapp; 0832671       */
-/* 1 March 2017 - Last modified 6/3/2017        */
+/* 1 March 2017 - Last modified 5/4/2017        */
 
 %{
 #define YYPARSER
@@ -235,7 +235,7 @@ param               : type_specifier ID
                             strcpy($$->val, $2);
                             $$->func = false;
                             $$->array = true;
-                            $$->size = 999;
+                            $$->size = 255;
                             switch($1) {
                                 case INT:
                                     $$->type = INT_T;

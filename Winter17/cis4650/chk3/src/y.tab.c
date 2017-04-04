@@ -1732,7 +1732,7 @@ yyreduce:
                             strcpy((yyval.node)->val, (yyvsp[(2) - (4)].str));
                             (yyval.node)->func = false;
                             (yyval.node)->array = true;
-                            (yyval.node)->size = 999;
+                            (yyval.node)->size = 255;
                             switch((yyvsp[(1) - (4)].varType)) {
                                 case INT:
                                     (yyval.node)->type = INT_T;

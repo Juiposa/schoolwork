@@ -4,6 +4,7 @@
 /* 1 March 2017 - Last modified 6/3/2017        */
 
 #include "cminus.h"
+#include "emitTM.h"
 #include "y.tab.h"
 
 extern string tokenString;
@@ -37,30 +38,34 @@ int main( int argc, char* argv[] ) {
         cerr << "ERROR: File not found: " << argv[1] << "\n";
         exit(1);
     }
-
+    ostringstream abst;
+    abst << argv[1] << ".abs";
     outputFile = stdout;
-    //outputFile = fopen("syntaxtree.abs", "w");
+    //outputFile = fopen(abst.str().c_str(), "w");
     outTree = parse();
     if(displayTree) { //AST printingcat syn
         fprintf(outputFile, "\n\nAbstract Syntax Tree:\n" );
         printTree(outTree);
     }
     //fclose(outputFile);
+
+    fprintf(outputFile, "\n\nSymbol Table:\n" );
+    //inserting input and output into the symbol table
+    astTreeNode * outputFunc = newDec(FUN_K);
+    strcpy(outputFunc->val, "output");
+    outputFunc->level = 0;
+    symbolTable.insert({outputFunc->val, outputFunc});
+    astTreeNode * inputFunc = newDec(FUN_K);
+    strcpy(inputFunc->val, "output");
+    inputFunc->level = 0;
+    symbolTable.insert({inputFunc->val, inputFunc});
     buildSymbolTable(outTree, 0, false, true);
 
-    //outputFile = fopen("symboltable.sym", "w");
-    if(displaySymbolTable) { //Hash Map printing
-        for( int i = 0; i < symbolTable.bucket_count(); ++i ) {
-            fprintf(outputFile, "Bucket #%d conatins:", i );
-            for ( auto local_it = symbolTable.begin(i); local_it!= symbolTable.end(i); ++local_it )
-                fprintf(outputFile, " %s:%d",local_it->first.c_str(), local_it->second );
-            fprintf(outputFile, "\n" );
-        }
-    }
-
-    if(outTree != NULL) {
-        typeChecking(outTree);
-    }
+    ostringstream sym;
+    sym << argv[1] << ".sym";
+    //outputFile = fopen(sym.str().c_str(), "w");
+    
+    emitTM(outTree, argv[1]);
     //fclose(outputFile);
     return 1;
 }
@@ -260,7 +265,9 @@ void printTree( astTreeNode * tree ) {
 //level to pass the scope level up the stack
 //func as compound_stmts tied to a function aren't their own scope
 //so tell the function if its a function already
-void buildSymbolTable( astTreeNode * tree, int level, bool func, bool print ) {
+//will do type checking while it's checking declarations
+bool buildSymbolTable( astTreeNode * tree, int level, bool func, bool print ) {
+    bool returnVal = true;
     INDENT;
     for ( ; tree != NULL; tree = tree->sibling ) {
         if ( tree->node_kind == DEC_K && tree->kind.declaration == FUN_K ) { //if the node is a function dec
@@ -272,24 +279,35 @@ void buildSymbolTable( astTreeNode * tree, int level, bool func, bool print ) {
                     fprintf(outputFile, "Entering new function %s\n", tree->val );
                 }
                 for ( int i = 0; i < MAXCHILDREN; i++ ) { //else we the same level yo
-                    buildSymbolTable(tree->child[i], level+1, true, print );
+                    returnVal = buildSymbolTable(tree->child[i], level+1, true, print );
                 }
                 if(print) {
                     printSpaces();
                     fprintf(outputFile, "Exiting function %s\n", tree->val );
                 }
+                delNodes(level+1);
             } else {
-                fprintf(outputFile, "\nERROR: at line %d: Function %s has already been delcared", tree->pos, tree->val );
+                fprintf(outputFile, "ERROR: at line %d: Function %s has already been delcared\n", tree->pos, tree->val );
+                returnVal = false;
             }
         } else if ( tree->kind.statement == CMPD_K ) { //if its a compound statement
             if( func == false ) { //if the compound statement isn't already tied to a function
-                for ( int i = 0; i < MAXCHILDREN; i++ ) { //then we is a new level yo
-                    buildSymbolTable(tree->child[i], level+1, false, print );
+                if(print) {
+                    printSpaces();
+                    fprintf(outputFile, "Entering compound statement: level %d\n", level+1 );
                 }
+                for ( int i = 0; i < MAXCHILDREN; i++ ) { //then we is a new level yo
+                    returnVal = buildSymbolTable(tree->child[i], level+1, false, print );
+                }
+                if(print) {
+                    printSpaces();
+                    fprintf(outputFile, "Leaving compound statement: level %d\n", level+1 );
+                }
+                delNodes(level+1);
             } else {
                 for ( int i = 0; i < MAXCHILDREN; i++ ) { //else we the same level yo
                     UNINDENT;
-                    buildSymbolTable(tree->child[i], level, false, print );\
+                    returnVal = buildSymbolTable(tree->child[i], level, false, print );\
                     INDENT;
                 }
             }
@@ -319,86 +337,97 @@ void buildSymbolTable( astTreeNode * tree, int level, bool func, bool print ) {
                             break;
                     }
                 }
-                for ( int i = 0; i < MAXCHILDREN; i++ ) { //else we the same level yo
-                    buildSymbolTable(tree->child[i], level, true, print );
+                for ( int i = 0; i < MAXCHILDREN; i++ ) {
+                    returnVal = buildSymbolTable(tree->child[i], level, true, print );
                 }
             } else {
-                fprintf(outputFile, "\nERROR: at line %d: Variable %s has already been delcared", tree->pos, tree->val );
+                fprintf(outputFile, "ERROR: at line %d: Variable %s has already been delcared\n", tree->pos, tree->val );
+                returnVal = false;
+            }
+        } else {
+            returnVal = typeChecking(tree);
+            for ( int i = 0; i < MAXCHILDREN; i++ ) { //else we the same level yo
+                returnVal = buildSymbolTable(tree->child[i], level, false, print );
             }
         }
     }
     UNINDENT;
+    return returnVal;
+}
+
+//removes the node of a defunct scope
+void delNodes( int level ) {
+    for( auto it = symbolTable.begin(); it != symbolTable.end(); ++it ) {
+        if( it->second->level == level ) {
+            symbolTable.erase(it->first);
+        }
+    }
 }
 
 bool typeChecking( astTreeNode * tree ) {
     bool semanticSuccess = true;
     astTreeNode * node;
-    for ( ; tree != NULL; tree = tree->sibling ) {
-        if( tree->node_kind == STMT_K ) {
-            switch( tree->kind.statement ) {
-                case IF_K:
-                    if( tree->child[0]->child[0]->kind.expression != CONST_K ) {
-                        if( symbolTable.count(tree->child[0]->child[0]->val) != 0 ) {
-                            node = symbolTable.find(tree->child[0]->child[0]->val)->second;
-                        } else {
-                            node = NULL;
-                        }
-                        if( node == NULL || node->type != INT_T ) {
-                            fprintf(outputFile, "ERROR: at line %d: If condition must be an integer constant or variable\n", tree->child[0]->child[0]->pos);
-                        }
-                    }
-                    break;
-                case RETURN_K:
-                    if( tree->child[0]->kind.expression == OP_K ){
-                        break;
+    if( tree->node_kind == STMT_K ) {
+        switch( tree->kind.statement ) {
+            case IF_K:
+                if( tree->child[0]->child[0]->kind.expression != CONST_K ) {
+                    if( symbolTable.count(tree->child[0]->child[0]->val) != 0 ) {
+                        node = symbolTable.find(tree->child[0]->child[0]->val)->second;
                     } else {
-                        node = symbolTable.find(tree->child[0]->val)->second;
+                        node = NULL;
                     }
-                    if( node->type != symbolTable.find(tree->function)->second->type ) {
-                        fprintf(outputFile, "ERROR: at line %d: Return type mismatch\n", tree->pos);
+                    if( node == NULL || node->type != INT_T ) {
+                        fprintf(outputFile, "ERROR: at line %d: If condition must be an integer constant or variable\n", tree->child[0]->child[0]->pos);
                     }
+                }
+                break;
+            case RETURN_K:
+                if( tree->child[0]->kind.expression == OP_K ){
                     break;
-                case WHILE_K:
-                    if( tree->child[0]->child[0]->kind.expression != CONST_K ) {
-                        if( symbolTable.count(tree->child[0]->child[0]->val) != 0 ) {
-                            node = symbolTable.find(tree->child[0]->child[0]->val)->second;
-                        } else {
-                            node = NULL;
-                        }
-                        if( node == NULL || node->type != INT_T ) {
-                            fprintf(outputFile, "ERROR: at line %d: While condition must be an integer constant or variable\n", tree->child[0]->child[0]->pos);
-                        }
+                } else {
+                    node = symbolTable.find(tree->child[0]->val)->second;
+                }
+                if( node->type != symbolTable.find(tree->function)->second->type ) {
+                    fprintf(outputFile, "ERROR: at line %d: Return type mismatch\n", tree->pos);
+                }
+                break;
+            case WHILE_K:
+                if( tree->child[0]->child[0]->kind.expression != CONST_K ) {
+                    if( symbolTable.count(tree->child[0]->child[0]->val) != 0 ) {
+                        node = symbolTable.find(tree->child[0]->child[0]->val)->second;
+                    } else {
+                        node = NULL;
                     }
-                    break;
-            }
-        } else if ( tree->node_kind == EXP_K ) {
-            switch ( tree->kind.expression ) {
-                case OP_K:
-                    if( checkOperation( tree ) == VOID_T ) {
-                        fprintf(outputFile, "ERROR: at line %d: Mismatch of data types in operation\n", tree->pos);
+                    if( node == NULL || node->type != INT_T ) {
+                        fprintf(outputFile, "ERROR: at line %d: While condition must be an integer constant or variable\n", tree->child[0]->child[0]->pos);
                     }
-                    break;
-                case CONST_K:
-                    break;
-                case ID_K:
-                     if ( symbolTable.find(tree->val) == symbolTable.end() ) {
-                        semanticSuccess = false;
-                        fprintf(outputFile, "ERROR: at line %d: Variable %s is undeclared\n", tree->pos, tree->val);
-                     }
-                    break;
-                case CALL_K:
-                    if ( symbolTable.find(tree->val) == symbolTable.end() ) {
-                        semanticSuccess = false;
-                        fprintf(outputFile, "ERROR: at line %d: Call to undeclared function %s\n", tree->pos, tree->val);
-                    }
-                    break;
-                case ARGS_K:
-                    //not implemented
-                    break;
-            }
+                }
+                break;
         }
-        for ( int i = 0; i < MAXCHILDREN; i++ ) {
-            typeChecking(tree->child[i]);
+    } else if ( tree->node_kind == EXP_K ) {
+        switch ( tree->kind.expression ) {
+            case OP_K:
+                if( checkOperation( tree ) == VOID_T ) {
+                    fprintf(outputFile, "ERROR: at line %d: Mismatch of data types in operation\n", tree->pos);
+                }
+                break;
+            case CONST_K:
+                break;
+            case ID_K:
+                 if ( symbolTable.find(tree->val) == symbolTable.end() ) {
+                    semanticSuccess = false;
+                    fprintf(outputFile, "ERROR: at line %d: Variable %s is undeclared\n", tree->pos, tree->val);
+                 }
+                break;
+            case CALL_K:
+                if ( symbolTable.find(tree->val) == symbolTable.end() ) {
+                    semanticSuccess = false;
+                    fprintf(outputFile, "ERROR: at line %d: Call to undeclared function %s\n", tree->pos, tree->val);
+                }
+                break;
+            case ARGS_K:
+                //not implemented
+                break;
         }
     }
     return semanticSuccess;

@@ -4,13 +4,16 @@ YACC = bison
 
 CFLAGS = -Iinclude -g -std=c++0x
 
-all: parser bin/cminus.o include/y.tab.h
-	$(CC) $(CFLAGS) bin/y.tab.o bin/lex.yy.o bin/cminus.o -ll -o cm
+all: parser emitter bin/cminus.o include/y.tab.h
+	$(CC) $(CFLAGS) bin/y.tab.o bin/lex.yy.o bin/cminus.o bin/emitTM.o -ll -o cm
 
 bin/cminus.o:
 	$(CC) $(CFLAGS) -c src/cminus.cpp -o bin/cminus.o
 
 parser: bin/y.tab.o bin/lex.yy.o
+
+emitter:
+	$(CC) $(CFLAGS) -c src/emitTM.cpp -o bin/emitTM.o
 
 bin/y.tab.o: src/y.tab.c
 	$(CC) $(CFLAGS) -c src/y.tab.c -o bin/y.tab.o

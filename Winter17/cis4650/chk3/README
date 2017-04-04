@@ -3,6 +3,3 @@ Jeffrey-David Kapp 0832671
 6 March 2016
 
 'make' will build the whole project, and 'cm' is the program generated
-
-A good bit of inspiration was taken from the tiny_c parser. All instances of code
-used have been adapted to work here and have been noted. 

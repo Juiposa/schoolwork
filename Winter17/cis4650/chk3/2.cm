@@ -1,17 +1,10 @@
-int gcd (int u, int v ) {
-    int w;
-    if(v == 0)
-        return u;
-    else
-        return gcd(v, u -u/v*v);
-}
-int gcd(void) {
-
-}
-
-void main ( void ) {
-    int x;
-    int y;
-    x = input(); y = input();
-    output( gcd(x, y) );
+void main(void) {
+    int i;
+    i = 10;
+    while ( i > 0 ) {
+        output(i);
+        if(i == 5)
+            output(5000);
+        i = i - 1;
+    }
 }

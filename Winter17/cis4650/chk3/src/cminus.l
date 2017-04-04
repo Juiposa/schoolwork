@@ -1,7 +1,7 @@
 /* cminus.l                                     */
 /* Flex specification of a cminus scanner       */
 /* Created by Jeffrey-David Kapp; 0832671       */
-/* 1 March 2017 - Last modified 1/3/2017        */
+/* 1 March 2017 - Last modified 3/4/2017        */
 
 %{
 
@@ -14,12 +14,12 @@ bool parseState = true;
 
 %}
 
-letter      [a-zA-z]
+letter      [a-zA-Z]
 digit       [0-9]
 identifier  {letter}+
 number      {digit}+
 newline     \n
-whitespace  [ \t\r]+
+whitespace  [ \t\r]
 
 %%
 
@@ -83,7 +83,7 @@ int getToken() {
     curToken = yylex();
     tokenString = yytext;
 
-    fprintf(outputFile, "Line: %d ", lineno );
-    printToken( curToken, tokenString );
+    //fprintf(outputFile, "Line: %d ", lineno );
+    //printToken( curToken, tokenString );
     return curToken;
 }

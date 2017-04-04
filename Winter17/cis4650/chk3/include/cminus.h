@@ -13,6 +13,7 @@
 #include <cctype>
 #include <iostream>
 #include <string>
+#include <sstream>
 #include <stdexcept>
 #include <unordered_map>
 
@@ -57,6 +58,11 @@ typedef struct astTreeNode {
     int level;
     int scope;
 
+    //offset
+    //vars; where in dmem the var is sitting, relative to frame pointer
+    //func; where in imem the function start is sitting, absolute
+    int offset;
+
     //declaration flags
     bool func;
     bool array;
@@ -91,7 +97,8 @@ void printToken( int tokenType, string tokenStr );
 void printTree( astTreeNode * tree );
 
 //semantic checker
-void buildSymbolTable( astTreeNode * tree, int level, bool func, bool print );
+bool buildSymbolTable( astTreeNode * tree, int level, bool func, bool print );
+void delNodes( int level );
 bool typeChecking( astTreeNode * tree );
 VarType checkOperation( astTreeNode * tree );
 
