@@ -1,0 +1,34 @@
+
+
+Abstract Syntax Tree:
+    Function declaration: main
+        Compount Statement
+            Variable declaration: x (INTEGER)
+            Variable declaration: fac (INTEGER)
+            Variable declaration: i (INTEGER)
+            Variable declaration: j (INTEGER)
+            Variable declaration: k (INTEGER)
+            Operation: =
+                Id: x
+                Function call: input
+            Operation: =
+                Id: fac
+                Const: 1
+            While
+                Operation: >
+                    Id: x
+                    Const: 1
+                Compount Statement
+                    Operation: =
+                        Id: fac
+                        Operation: *
+                            Id: fac
+                            Id: x
+                    Operation: =
+                        Id: x
+                        Operation: -
+                            Id: x
+                            Const: 1
+            Function call: output
+                Id: fac
+            Return

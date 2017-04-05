@@ -1,18 +1,17 @@
 //master function, set up prelude, finale and IO functions
-void emitTM( astTreeNode * tree, char * filename );
+void emitTM( astTreeNode * tree, string filename );
 
 //evalutes each node then call one of the three following
-void nodeEmit( astTreeNode * tree, int offset, int level, bool func );
+int nodeEmit( astTreeNode * tree, int offset, int level, bool func );
 
 //emits statements
-void stmtEmit( astTreeNode * tree, int offset );
-
-//emits declarations
-void varDecEmit( astTreeNode * tree, int offset );
-void funcDecEmit( astTreeNode * tree, int offset );
+void stmtEmit( astTreeNode * tree, int offset, int level, bool func );
 
 //emits expressions
 void expEmit( astTreeNode * tree, int offset );
+
+//emits arithmetic expressions, whiles and ifs
+void emitOP( astTreeNode * tree, int offset );
 
 //writes a single line of TM assembly
 void emitRM( string op, int r, int d, int s, string m );

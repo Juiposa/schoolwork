@@ -17,6 +17,7 @@ int main( int argc, char* argv[] ) {
     astTreeNode * outTree;
     bool displayTree = false;
     bool displaySymbolTable = false;
+    bool emitAssembly = false;
 
     if ( argc < 2 ) {
         cerr << "ERROR: Filename required\n";
@@ -27,10 +28,18 @@ int main( int argc, char* argv[] ) {
     for( int i = 2; i < argc; i++ ) {
         if( strcmp( argv[i], "-a" ) == 0 ) {
             displayTree = true;
-        } else if (  strcmp( argv[i], "-s" ) == 0 ) {
+        } else if ( strcmp( argv[i], "-s" ) == 0 ) {
             displaySymbolTable = true;
+        } else if ( strcmp( argv[i], "-c") == 0 ) {
+            emitAssembly = true;
         }
     }
+    string filename = argv[1];
+    string ending = ".cm";
+    string::size_type i_t = filename.find(ending);
+
+    if ( i_t != string::npos )
+        filename.erase(i_t, ending.length());
 
     sourceFile = fopen(argv[1], "r");
 
@@ -39,34 +48,34 @@ int main( int argc, char* argv[] ) {
         exit(1);
     }
     ostringstream abst;
-    abst << argv[1] << ".abs";
-    outputFile = stdout;
-    //outputFile = fopen(abst.str().c_str(), "w");
+    abst << filename << ".abs";
+    outputFile = fopen(abst.str().c_str(), "w");
     outTree = parse();
     if(displayTree) { //AST printingcat syn
         fprintf(outputFile, "\n\nAbstract Syntax Tree:\n" );
         printTree(outTree);
     }
-    //fclose(outputFile);
+    fclose(outputFile);
+    outputFile = NULL;
 
+    ostringstream sym;
+    sym << filename << ".sym";
+    outputFile = fopen(sym.str().c_str(), "w");
     fprintf(outputFile, "\n\nSymbol Table:\n" );
     //inserting input and output into the symbol table
-    astTreeNode * outputFunc = newDec(FUN_K);
+    /*astTreeNode * outputFunc = newDec(FUN_K);
     strcpy(outputFunc->val, "output");
     outputFunc->level = 0;
     symbolTable.insert({outputFunc->val, outputFunc});
     astTreeNode * inputFunc = newDec(FUN_K);
-    strcpy(inputFunc->val, "output");
+    strcpy(inputFunc->val, "input");
     inputFunc->level = 0;
-    symbolTable.insert({inputFunc->val, inputFunc});
-    buildSymbolTable(outTree, 0, false, true);
-
-    ostringstream sym;
-    sym << argv[1] << ".sym";
-    //outputFile = fopen(sym.str().c_str(), "w");
-    
-    emitTM(outTree, argv[1]);
-    //fclose(outputFile);
+    symbolTable.insert({inputFunc->val, inputFunc});*/
+    bool semanticSuccess = buildSymbolTable(outTree, 0, false, displaySymbolTable);
+    if ( semanticSuccess && emitAssembly )
+        emitTM(outTree, filename);
+    fclose(outputFile);
+    fclose(sourceFile);
     return 1;
 }
 
@@ -382,7 +391,9 @@ bool typeChecking( astTreeNode * tree ) {
                 }
                 break;
             case RETURN_K:
-                if( tree->child[0]->kind.expression == OP_K ){
+                if (tree->child[0] == NULL ) {
+                    break;
+                } else if ( tree->child[0]->kind.expression == OP_K ){
                     break;
                 } else {
                     node = symbolTable.find(tree->child[0]->val)->second;
@@ -420,7 +431,8 @@ bool typeChecking( astTreeNode * tree ) {
                  }
                 break;
             case CALL_K:
-                if ( symbolTable.find(tree->val) == symbolTable.end() ) {
+                fprintf(stdout, "CHECKING CALL TO FUNCTION\n");
+                if ( symbolTable.count(tree->val) == 0 ) {
                     semanticSuccess = false;
                     fprintf(outputFile, "ERROR: at line %d: Call to undeclared function %s\n", tree->pos, tree->val);
                 }

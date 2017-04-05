@@ -1,5 +1,8 @@
 void main(void) {
   int x; int fac;
+  int i;
+  int j;
+  int k;
 
   x = input();
   fac = 1;
@@ -7,7 +10,8 @@ void main(void) {
   while (x > 1) {
     fac = fac * x;
     x = x - 1;
-  } 
+  }
 
   output(fac);
+  return;
 }

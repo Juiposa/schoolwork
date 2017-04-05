@@ -1,4 +1,3 @@
-int y;
 
 int gcd(int u, int v) {
   if (v == 0) return u;
@@ -6,8 +5,8 @@ int gcd(int u, int v) {
 }
 
 void main(void) {
-  int x;
+  int x; int y;
   x = input();
-  y = 10;
+  y = input();
   output(gcd(x, y));
 }
