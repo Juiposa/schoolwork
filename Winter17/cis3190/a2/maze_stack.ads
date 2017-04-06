@@ -1,5 +1,5 @@
 --Stack spec from the Ada notes in unit6_ada_ii.pdf
---has been adaptaed to a different data type for use in maze solving
+--has been adapated to a different data type for use in maze solving
 
 package maze_stack is
     type element is array(1..2) of integer;

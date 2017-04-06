@@ -1,3 +1,6 @@
+--maze solver using a stack
+--compile using the Makefile
+
 with Ada.Text_IO, Ada.Integer_Text_IO, Ada.Strings, Ada.Strings.Fixed;
 use Ada.Text_IO, Ada.Integer_Text_IO, Ada.Strings, Ada.Strings.Fixed;
 with maze_stack; use maze_stack;
@@ -5,7 +8,7 @@ procedure maze_search is
     type maze_type is array(1..50, 1..50) of character;
     x, y : integer; --cursor location
     mazex, mazey : integer; --maze dimensions
-    i, j, k, l : integer; --iterators
+    i, j: integer; --iterators
     maze : maze_type; --the maze itself
     inFile, outFile : file_type;
     inString : string(1..9);
@@ -13,6 +16,7 @@ procedure maze_search is
     popped : element;
     newElement : element;
 begin
+    i := 1; j := 1;
     x := 0; y := 0;
     put_line("Maze search.");
     put_line("Enter file name to read from:");
@@ -42,7 +46,7 @@ begin
         end loop;
         New_Line;
     end loop;
-    while maze(x,y) /= 'e' loop
+    while true loop
         --first check if any of the adjacent cells is the terminus
         --this if statement is gross
         if maze(x+1,y)='e' or maze(x,y+1)='e' or maze(x-1,y)='e' or maze(x,y-1)='e' then

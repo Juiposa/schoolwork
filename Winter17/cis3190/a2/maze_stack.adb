@@ -1,10 +1,10 @@
 --Stack definition from the Ada notes in unit6_ada_ii.pdf
---has been adaptaed to a different data type for use in maze solving (int arrays of size 6)
+--has been adapated to a different data type for use in maze solving (int arrays of size 2)
 
 with Ada.Text_IO; use Ada.Text_IO;
 
 package body maze_stack is
-    type list is array(1..2304) of element;
+    type list is array(1..2304) of element; --the largest possible number of items on the stack is 48 * 48 = 2304
     type stack is
         record
             item : list;
@@ -14,7 +14,7 @@ package body maze_stack is
 
     procedure push( x : in element) is
     begin
-        if st.top = 100 then
+        if st.top = 2304 then
             put_line("stack is full");
         else
             st.top := st.top + 1;
@@ -38,10 +38,11 @@ package body maze_stack is
     end stack_is_empty;
 
     function stack_top return element is
+
     begin
         if st.top = 0 then
             put_line("stack is empty");
-            return (0,0,0,0,0,0);
+            return (0,0);
         else
             return st.item(st.top);
         end if;
